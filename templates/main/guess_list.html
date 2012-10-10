@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<table>
+    {% for guess in object_list %}
+    <tr>
+        <td>
+        <em>    
+            {{guess.time}}
+        </em>
+        </td>
+        <td>
+            {{guess.team}}
+        </td>
+        <td>
+            <a href="/puzzles/{{guess.puzzle.pk}}">{{guess.puzzle.name}}</a>
+        <td>
+            {{guess.text}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

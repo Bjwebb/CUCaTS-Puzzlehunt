@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+
+
+<h2>Raven</h2>
+
+<p>
+<form method="get" action="/accounts/ravenlogin">
+<input type="submit" value="Log in using raven." />
+</form>
+</p>
+
+<h2>Alternative Login</h2>
+
+<p>
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+{% csrf_token %}
+<table>
+<tr>
+    <td class="highlight cl3">{{ form.username.label_tag }}</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr>
+    <td class="highlight cl3">{{ form.password.label_tag }}</td>
+    <td>{{ form.password }}</td>
+</tr>
+<tr>
+    <td colspan="2"><input type="submit" name="login" value="Log in!" /></td>
+</tr>
+</table>
+
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+
+</p>
+
+{% endblock %}

@@ -1,0 +1,92 @@
+<html>
+<head><title>CUCaTS Puzzlehunt</title>
+<link rel='stylesheet' href='/static/style.css'>
+<link rel='stylesheet' href='/static/site.css'>
+<style>
+</style>
+</head>
+<body>
+<div class='title'><img src='/static/cucats-logo.png' border='0'></div>
+<table class='root'>
+    <tr class='top'>
+            <td class='top'>
+                        <font face='sharereg' style='font-size:20pt;font-weight:bold'>Puzzlehunt</font>
+                                </td>
+                                    </tr><tr class='links'>
+                                            <td class='links'><span class='l'>
+
+    <a href="/">Home</a>
+        &nbsp; &#183; &nbsp; 
+    <a href="/teams">Teams</a>
+{% if user.is_authenticated %}
+        &nbsp; &#183; &nbsp; 
+    <a href="/puzzles">Puzzles</a>
+        &nbsp; &#183; &nbsp; 
+    <a href="/messages">Messages</a> {% if message_count %}({{message_count}}){%endif%}
+{% endif %}
+        &nbsp; &#183; &nbsp; 
+    <a href="/q">Questionnaire</a>
+    {% if user.is_staff %}
+        &nbsp; &#183; &nbsp; 
+        Judges:
+        &nbsp; &#183; &nbsp; 
+        <a href="/guesses">Guesses</a>
+    {% endif %}
+
+</span>
+
+&nbsp;<span style='position:absolute;top:0px;right:0px;padding:8px;'> 
+{% if hunt.start < hunt.now %}
+ {% if hunt.end > hunt.now %}
+    Extension
+        &nbsp; &#183; &nbsp; 
+    Elapsed: {{hunt.start|timesince:hunt.now}}
+        &nbsp; &#183; &nbsp; 
+    Remaining: {{hunt.end|timeuntil:hunt.now}}
+        &nbsp; &#183; &nbsp; 
+ {% endif %}
+{% else %}
+    Puzzlehunt extension begins in {{hunt.start|timeuntil:hunt.now}}
+        &nbsp; &#183; &nbsp; 
+{% endif %}
+
+{% if user.is_authenticated %}
+    {{ user.username }}
+        &nbsp; &#183; &nbsp; 
+    {% if user.is_staff %} (Judge) {% else %}
+    Team: {{user.team_set.all|first}}{% endif %}
+        &nbsp; &#183; &nbsp; 
+    <a href="/accounts/logout/">Logout</a>
+{% else %}
+    <a href="/accounts/login/">Login</a>
+{% endif %}
+</span>
+                                                                </td>
+                                                                    </tr><tr>
+                                                                            <td class='main'>
+      
+      {% block content %}{% endblock %}
+      
+      </td>
+
+</tr><tr>
+                                                                                <td class='foot'>
+                                                                                        <div class='float'>
+                                                                                                    <br><br>Powered by Django
+                                                                                                            </div>
+                                                                                                                    <div class='floatl'>
+                                                                                                                                "Share" font family by <a href='http://www.carrois.com/'>Ralph Oliver du Carrois</a><br>
+                                                                                                                                Hoodies and stash provided to CUCaTS by <a href='http://www.ideasbynet.com/'>Ideasbynet.com</a>.<br>
+                                                                                                                                <a href='http://www.cardsmadeeasy.com'>Business cards</a> and <a href='http://www.cardsmadeeasy.com/card_designs.php'>printing services</a> provided to CUCaTS by CardsMadeEasy.
+
+                                                                                                                                        </div>
+                                                                                                                                            </td></tr>
+                                                                                                                                            </table>
+                                                                                                                                            </body>
+                                                                                                                                            </html>
+
+
+
+
+
+

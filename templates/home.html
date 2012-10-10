@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+
+<h2>Announcements</h2>
+
+{% for a in object_list %}
+    <p style="margin: 20px;"><div class='eventbox'><div style='float: right;'><b>{{a.time}}</b>&nbsp;&nbsp;|&nbsp;&nbsp;
+    
+{% if hunt.start < a.time %}
+ {% if hunt.end > a.time %}
+    {{hunt.start|timesince:a.time}} into the extension
+ {% else %}
+    After the extension
+ {% endif %}
+{% else %}
+    Before the extension
+{% endif %}
+
+    </div>
+    <div class='eventTitle'><font face='sharereg' class='cl1'>{{a.title}}</font></div>
+    {{a.text|safe|linebreaks}}
+    </div></div>
+{%endfor%}
+
+{% endblock %}

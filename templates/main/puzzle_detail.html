@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+
+{% if error %}
+
+<h2>{{error}}</h2>
+{{ description|safe|linebreaks }}
+
+{% else %}
+
+<h2>{{ puzzle.name }}</h2>
+{% if user.is_staff %}
+    Teams completed:
+    {% for team in puzzle.team_set.all %}
+        <a href="/teams/{{team.pk}}">{{ team.name }}</a>
+    {% endfor %}
+{% else %}
+    <h3>
+    {% if completed %}Completed{%else%}Uncompleted{%endif%}
+    </h3>
+{% endif %}
+{{ puzzle.description|safe|linebreaks }}
+
+{% if user.is_staff %}
+    {% for tp in puzzle.teampuzzle_set.all %}
+    <strong>{{ tp.team }}</strong>
+    {{ tp.description|safe|linebreaks }}
+    {% endfor %}
+{% else %}
+    {{ teampuzzle.description|safe|linebreaks }}
+{% endif %}
+
+{% if matveymagic %}
+    <p>{{ matveymagic }}</p>
+{% endif %}
+
+
+{% comment %}
+<p>
+<form method="post">
+<table>
+<tr>
+    <td class="highlight cl3">Solution:</td>
+    <td>
+        <input type="text" name="solution" />
+        {% csrf_token %}
+        <input type="submit" value="Submit" />
+    </td>
+</tr>
+{% if solution %}
+<tr>
+    <td class="highlight cl3">Response:</td>
+    <td>
+        {{ solution|safe }}
+    </td>
+</tr> 
+{% endif %}
+{% if clue %}
+<tr>
+    <td class="highlight cl3">Clue for next puzzle:</td>
+    <td>
+        {{ clue|safe }}
+    </td>
+</tr> 
+{% endif %}
+</table>
+</form>
+</p>
+{% endcomment %}
+
+
+{% endif %}
+
+{% endblock %}
+

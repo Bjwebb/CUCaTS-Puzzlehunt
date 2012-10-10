@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Questionnaire</h2>
+
+<form method="post" action="">
+    <p>Fill in as much information as you would like. Obviously the more you say, the more helpful it is to us. Please add comments even if you have mentioned them in person, so that we have it recorded for next time.</p>
+    <table>
+        {{ form }}
+    </table>
+    <p>If you would like, you can rank each of the puzzles in order of how difficult/interesting you thought they were, where 1 is the least difficiult/interesting and 5 is the most.</p>
+    <p>All reachable puzzles are listed here. Feel free to leave any you did not reach/complete blank if you want.</p>
+    <table>
+        {% comment %}{{ formset.management_form }}{% endcomment %}
+        <input type="hidden" name="puzzleresponse_set-TOTAL_FORMS" value="22" id="id_puzzleresponse_set-TOTAL_FORMS" /><input type="hidden" name="puzzleresponse_set-INITIAL_FORMS" value="0" id="id_puzzleresponse_set-INITIAL_FORMS" /><input type="hidden" name="puzzleresponse_set-MAX_NUM_FORMS" id="id_puzzleresponse_set-MAX_NUM_FORMS" />
+        <tr>
+            <th>Puzzle</th>
+            <th>Interesting</th>
+            <th>Difficulty</th>
+        </tr>
+        {% for form,puzzle in forms %}
+        <tr>
+        <td>
+            <a href="/puzzles/{{puzzle.pk}}">{{ puzzle.name }}</a>
+            {{ form.puzzle.as_hidden }}
+        </td><td>
+            {{ form.interest }}
+        </td><td>
+            {{ form.difficulty }}
+        </td>
+        </tr>
+        {% endfor %}
+    </table>
+        {% csrf_token %}
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

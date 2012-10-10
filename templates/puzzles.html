@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+
+{% if team %}
+<h2>{{team.name}}</h2>
+{% else %}
+<h2>Puzzles</h2>
+{% endif %}
+
+<p>
+
+<table>
+
+{% for level_puzzles,connections in puzzles %}
+    <tr>
+    {% for node in level_puzzles %}
+        <td style="padding:0px" width="100px" align="center">
+        {% for puzzle in node %} 
+            <a class="puzzle{{forloop.counter0}}" href="/puzzles/{{ puzzle.pk }}">{{ puzzle.name }}</a>
+            <br/>
+        {% endfor %}
+        </td>
+    {% endfor %}
+    </tr>
+    <tr>
+        <td style="padding:0px" colspan="3"><img src="/puzzles/{{ connections }}.png" /></td>
+    </tr>
+{% endfor %}
+
+</table>
+
+</p>
+
+{% endblock %}

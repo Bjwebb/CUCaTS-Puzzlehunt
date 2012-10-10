@@ -1,0 +1,6 @@
+[raven]
+login_url = "http://raven.cam.ac.uk/auth/authenticate.html"
+logout_url = "http://raven.cam.ac.uk/auth/logout.html"
+return_url = "http://localhost:8000/accounts/ravenreturn/"
+pubkeys = {'2':'/home/bjwebb/django/hunt/pubkey2.crt'}
+

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+
+<h2>Teams</h2>
+
+<p>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Members</th>
+        <th>Completed Puzzles</th>
+        <th>Score</th>
+        <th>Score including extension</th>
+    </tr>
+    {% for team in object_list %}
+    <tr>
+    {% if user.is_staff %}
+        <th><a href="/teams/{{team.pk}}">{{ team.name }}</a></th>
+    {% else %}
+        <th>{{ team.name }}</th>
+    {% endif %}
+        <td>
+            {% for user in team.members.all %}
+            {{ user.username }}
+            {% endfor %}
+        </td>
+        <td>{{team.puzzles_completed.count}}</td>
+        <td>{{team.score1}}
+        <td>{{team.score2}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</p>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2> Messages </h2>
+
+{% if user.is_staff and not team %}
+
+{% for team in object_list %}
+    <p>
+    <a href="/messages/?team={{team.pk}}">{{team.name}}</a>
+    </p>
+{% endfor %}
+
+{% else %}
+
+<table>
+    {% for message in object_list %}
+    <tr>
+        <th>{% if message.judges %}Judges{%else%}Your Team{%endif%}</th>
+        <td>
+            {{message.time}}
+        </td>
+        <td>
+            {{message.text}}
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th></th>
+        <td></td>
+        <td>
+            <form method="post">
+                <textarea name="msg" rows=3 cols=80></textarea>
+                {% csrf_token %}
+                <input type="submit" value="Say" />
+            </form>
+        </td>
+</table>
+
+{% endif %}
+
+{% endblock %}
