@@ -51,3 +51,11 @@ class QuestionnaireView(TemplateView):
         context["forms"] = zip(pfs.forms, puzzles)
         return context
 
+class QuestionnaireSummaryView(TemplateView):
+    template_name="questionnaire/summary.html"
+
+    def get_context_data(self):
+        context = {}
+        context["puzzles"] = Puzzle.objects.all()
+        context["responses"] = PuzzleResponse.objects.all() 
+        return context

@@ -3,7 +3,7 @@ from hunt.main.views import HomeView, SignupView, PuzzleView, PuzzlesView, LiveV
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView
 from django.contrib.admin.views.decorators import staff_member_required
 from main.models import Puzzle, Team, Guess
-from questionnaire.views import QuestionnaireView 
+from questionnaire.views import QuestionnaireView, QuestionnaireSummaryView 
 
 
 # Uncomment the next two lines to enable the admin:
@@ -29,6 +29,7 @@ urlpatterns = patterns('',
 
     url(r'^q/$', QuestionnaireView.as_view()),
     url(r'^q/thankyou$', TemplateView.as_view(template_name="questionnaire/thankyou.html")),
+    url(r'^q/summary$', QuestionnaireSummaryView.as_view()),
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

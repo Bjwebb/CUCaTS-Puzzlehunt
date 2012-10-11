@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Questionnaire Summary</h2>
+
+<h3>Difficulty</h3>
+{% for puzzle in puzzles %}
+{{ puzzle }}
+{% for response in puzzle.puzzleresponse_set.all %}
+{% if response.difficulty > 0 %}
+{{response.difficulty}}
+{% endif %}
+{% endfor %}
+<br/>
+{% endfor %}
+
+<br/>
+<br/>
+<br/>
+
+<h3>Interest</h3>
+{% for puzzle in puzzles %}
+{{ puzzle }}
+{% for response in puzzle.puzzleresponse_set.all %}
+{% if response.interest > 0 %}
+{{response.interest}}
+{% endif %}
+{% endfor %}
+<br/>
+{% endfor %}
+
+{% endblock %}
