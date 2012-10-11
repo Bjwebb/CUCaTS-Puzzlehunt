@@ -91,6 +91,13 @@ class HomeView(ListView):
     template_name = "home.html"
     queryset = Announcement.objects.order_by('-time')
 
+    def get(self,request):
+        team = get_team(self.request.user)
+        if team:
+            for announcement in self.queryset.exclude(teams_read=team):
+                announcement.teams_read.add(team)
+        return super(HomeView, self).get(self, request)
+
 from django.views.generic import DetailView
 from django.http import Http404
 

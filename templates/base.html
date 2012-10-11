@@ -17,13 +17,15 @@
                                             <td class='links'><span class='l'>
 
     <a href="/">Home</a>
+    {% if announcement_count %}({{announcement_count}}){%endif%}
         &nbsp; &#183; &nbsp; 
     <a href="/teams">Teams</a>
 {% if user.is_authenticated %}
         &nbsp; &#183; &nbsp; 
     <a href="/puzzles">Puzzles</a>
         &nbsp; &#183; &nbsp; 
-    <a href="/messages">Messages</a> {% if message_count %}({{message_count}}){%endif%}
+    <a href="/messages">Messages</a>
+    {% if message_count %}({{message_count}}){%endif%}
 {% endif %}
         &nbsp; &#183; &nbsp; 
     <a href="/q">Questionnaire</a>

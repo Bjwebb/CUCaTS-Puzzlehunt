@@ -1,6 +1,6 @@
 import settings
 import datetime
-from main.models import Message
+from main.models import Message, Announcement
 from main.views import get_team
 
 def hunt(request):
@@ -8,10 +8,16 @@ def hunt(request):
     h["now"] = datetime.datetime.now()
     # TODO Separate this out
     if request.user.is_staff:
-        msgs = Message.objects.filter(read=False, judges=False).count() 
+        message_count = Message.objects.filter(read=False, judges=False).count() 
+        announcement_count = 0
     elif request.user.is_authenticated():
-        msgs = Message.objects.filter(read=False, judges=True, team=get_team(request.user)).count() 
+        team = get_team(request.user) 
+        message_count = Message.objects.filter(read=False, judges=True, team=team).count() 
+        announcement_count = Announcement.objects.exclude(teams_read=team).count()
     else:
-        msgs = 0
-    return {"hunt": h, "message_count": msgs}
+        message_count = 0
+        announcement_count = 0
+    return {"hunt": h,
+            "message_count": message_count,
+            "announcement_count": announcement_count }
 

@@ -44,6 +44,7 @@ class Announcement(models.Model):
     title = models.CharField(max_length=256, default="")
     text = models.TextField(default="", blank=True) 
     time = models.DateTimeField(auto_now_add=True)
+    teams_read = models.ManyToManyField(Team, blank=True)
 
     def __str__(self):
         return str(self.time)+" . . . . . "+self.title
@@ -54,3 +55,4 @@ class Message(models.Model):
     read = models.BooleanField(default=False)
     text = models.TextField(default="", blank=True) 
     time = models.DateTimeField(auto_now_add=True)
+
