@@ -9,6 +9,7 @@
 {% for team in object_list %}
     <p>
     <a href="/messages/?team={{team.pk}}">{{team.name}}</a>
+    ({{team.unread_message_count}})
     </p>
 {% endfor %}
 

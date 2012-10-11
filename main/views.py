@@ -58,7 +58,8 @@ class MessagesView(ListView):
                 self.team = Team.objects.get(pk=int(self.request.GET['team']))
             else:
                 self.team = None
-                queryset = Team.objects.all()
+                queryset = Team.objects.extra(
+                    select={'unread_message_count': 'SELECT COUNT(*) FROM main_message WHERE main_message.team_id=main_team.id AND main_message.read=false AND main_message.judges=false'})
                 return queryset
         else:
             self.team = get_team(self.request.user) 
