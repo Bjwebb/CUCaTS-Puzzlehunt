@@ -1,7 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django import forms
 
 from main.models import Puzzle, Team, Message, Announcement, Guess, TeamPuzzle
 import datetime
@@ -40,6 +42,34 @@ def raven_return(request):
         return HttpResponseRedirect('/')
     # Redirect somewhere sensible
 
+
+class SignupForm(forms.Form):
+    team_name = forms.CharField(max_length=256, required=False)
+    player1 = forms.CharField(required=False)
+    player2 = forms.CharField(required=False)
+    player3 = forms.CharField(required=False)
+
+from django.views.generic import FormView 
+class SignupView(FormView):
+    template_name = 'signup.html'
+    form_class = SignupForm
+    success_url = '/signup/thankyou'
+
+    def form_valid(self, form):
+        team = Team(name=form.cleaned_data['team_name'])
+        team.save()
+        def add_player(username, team):
+            if username: 
+                try:
+                    user = User.objects.get(username=username)
+                except User.DoesNotExist:
+                    user = User(username=username)
+                    user.save()
+                team.members.add(user)
+        add_player(form.cleaned_data['player1'], team)
+        add_player(form.cleaned_data['player2'], team)
+        add_player(form.cleaned_data['player3'], team)
+        return super(FormView, self).form_valid(form)
 
 
 def get_team(user):
