@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+import urllib2
+import json
 
 # Create your models here.
 
@@ -40,6 +42,14 @@ class Guess(models.Model):
     team = models.ForeignKey(Team)
     text = models.CharField(max_length=256) 
     time = models.DateTimeField(auto_now_add=True)
+    submitted = models.BooleanField(default=True)
+
+    def save(self,*args,**kwargs):
+        print self.text
+        super(Guess,self).save(*args,**kwargs)
+        urllib2.urlopen("http://127.0.0.1:8001/guess",
+                json.dumps([self.puzzle.pk,self.team.pk,self.text,self.time.isoformat(),self.submitted])
+                )
 
 class Announcement(models.Model):
     title = models.CharField(max_length=256, default="")
