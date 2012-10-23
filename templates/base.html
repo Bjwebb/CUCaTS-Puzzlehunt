@@ -41,8 +41,6 @@
 &nbsp;<span style='position:absolute;top:0px;right:0px;padding:8px;'> 
 {% if hunt.start < hunt.now %}
  {% if hunt.end > hunt.now %}
-    Extension
-        &nbsp; &#183; &nbsp; 
     Elapsed: {{hunt.start|timesince:hunt.now}}
         &nbsp; &#183; &nbsp; 
     Remaining: {{hunt.end|timeuntil:hunt.now}}
