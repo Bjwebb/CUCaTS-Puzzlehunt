@@ -14,7 +14,7 @@ def handle(request):
         request.send_reply(200,"OK",open('submit.html').read())
     elif request.uri == '/view':
         request.send_reply(200,"OK",open('view.html').read())
-    elif request.uri == '/solution':
+    elif request.uri == '/guess':
         text = request.input_buffer.read()
         stuff.append(text)
         if len(stuff) > 100:
@@ -33,7 +33,7 @@ def handle(request):
             i = 0
         counter = global_counter + len(stuff)
         request.send_reply(200,"OK",
-                json.dumps( {'counter':counter, 'text':stuff[i:]} ))
+                '{"counter":'+str(counter)+', "guesses":['+','.join(stuff[i:])+']}')
 
 #server = HTTPServer(('127.0.0.1', 8001), handle)
 server = HTTPServer(('0.0.0.0', 65300), handle)

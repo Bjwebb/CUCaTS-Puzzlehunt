@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 {% load url from future %}
 
+{% block header %}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script language="javascript">
+    $(document).ready(function() {
+        var send = function() {
+            $.post('/puzzles/{{puzzle.pk}}?xhr',
+                    {'solution': this.value} );
+        }
+        $('#solution').bind('change', send);
+        $('#solution').bind('keyup', send);
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 
 {% if error %}
@@ -44,7 +58,7 @@
     <tr>
         <td class="highlight cl3">Solution:</td>
         <td>
-            <input type="text" name="solution" />
+            <input type="text" name="solution" id="solution" />
             {% csrf_token %}
             <input type="submit" value="Submit" />
         </td>

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django import forms
-
+from django.views.decorators.csrf import csrf_exempt                                          
 from main.models import Puzzle, Team, Message, Announcement, Guess, TeamPuzzle
 import datetime
 import Image, ImageDraw
@@ -152,15 +152,21 @@ class PuzzleView(DetailView):
     template_name = "main/puzzle_detail.html"
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(PuzzleView, self).dispatch(*args, **kwargs)
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, **kwargs):
+        return super(PuzzleView, self).dispatch(request, **kwargs)
+
+    def render_to_response(self, context):
+        if 'xhr' in self.request.GET:
+            return HttpResponse('', mimetype='application/javascript')
+        else:
+            return super(PuzzleView, self).render_to_response(context)
 
     def post(self, *args, **kwargs):
         return self.get(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        # FIXME Re-enable for live
-        #test_puzzle_access(self.request.user, self.object)
+        test_puzzle_access(self.request.user, self.object)
         
         team = get_team(self.request.user)
         
@@ -170,15 +176,19 @@ class PuzzleView(DetailView):
             solution = self.request.POST["solution"]
         if "solution" in self.request.GET:
             solution = self.request.GET["solution"]
+        if 'xhr' in self.request.GET:
+            if team:
+                guess = Guess(puzzle=self.object, team=team, text=solution, submitted=False)
+                guess.save()
+            return []
         if solution:
             if team:
-                    guess = Guess(puzzle=self.object, team=team, text=solution)
-                    guess.save()
+                guess = Guess(puzzle=self.object, team=team, text=solution, submitted=True)
+                guess.save()
             if re.match("^"+self.object.solution+"$", solution):
                 context['solution'] = "Well done you solved this puzzle. See the new <a href=\"/puzzles/\">puzzles</a>."
-                # FIXME Re-enable to make live
-                #if team:
-                #        team.puzzles_completed.add(self.object)
+                if team:
+                        team.puzzles_completed.add(self.object)
             else:
                 context['solution'] = "Sorry, that is incorrect."
         context["completed"] = self.request.user.is_staff or (self.object in team.puzzles_completed.all())
@@ -290,8 +300,4 @@ def puzzlesimg(request, layout):
     response = HttpResponse(mimetype="image/png")
     img.save(response, "PNG")
     return response
-
-
-def choke(request):
-    return HttpResponse("Wait and listen")
 

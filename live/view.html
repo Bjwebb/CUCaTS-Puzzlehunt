@@ -3,9 +3,9 @@
 counter = 0;
 var callback = function(data) {
     counter = data.counter; 
-    for (i=0; i<data.text.length; i++) {
-        $('#text').append(data.text[i]+'<br/>')
-        $('#test').val(data.text[i]);
+    for (i=0; i<data.guesses.length; i++) {
+        $('#text').append(data.guesses[i][2]+'<br/>')
+        $('#test').val(data.guesses[i][2]);
     }
     g();
 };
