@@ -47,7 +47,7 @@ class Guess(models.Model):
     def save(self,*args,**kwargs):
         print self.text
         super(Guess,self).save(*args,**kwargs)
-        urllib2.urlopen("http://127.0.0.1:65300/guess",
+        urllib2.urlopen("http://127.0.0.1:8001/guess",
                 json.dumps([self.puzzle.pk,self.team.pk,self.text,self.time.isoformat(),self.submitted])
                 )
 

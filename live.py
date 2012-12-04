@@ -30,5 +30,5 @@ def handle(request):
         request.send_reply(200,"OK",
                 '{"counter":'+str(counter)+', "guesses":['+','.join(stuff[i:])+']}')
 
-server = HTTPServer(('127.0.0.1', 65300), handle)
+server = HTTPServer(('127.0.0.1', 8001), handle)
 server.serve_forever()

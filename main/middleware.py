@@ -4,7 +4,7 @@ from datetime import datetime
 from django.shortcuts import render
 import re
 
-from main.views import get_team
+from main.lib import get_team
 
 class LockDown:
     def process_request(self, request):

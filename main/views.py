@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django import forms
 from django.views.decorators.csrf import csrf_exempt                                          
@@ -10,6 +11,7 @@ import datetime
 import Image, ImageDraw
 
 import re
+from main.lib import get_team
 
 from pyroven import RavenConfig
 from pyroven.pyroven_django import Raven
@@ -43,6 +45,15 @@ def raven_return(request):
     # Redirect somewhere sensible
 
 
+@staff_member_required
+def liveapi(request, path):
+    response = HttpResponse()
+    response['Content-Type'] = ''
+    response['X-Accel-Redirect'] = '/_liveapi/' + path
+    return response
+
+
+
 class SignupForm(forms.Form):
     team_name = forms.CharField(max_length=256, required=False)
     player1 = forms.CharField(required=False)
@@ -72,13 +83,6 @@ class SignupView(FormView):
         return super(FormView, self).form_valid(form)
 
 
-def get_team(user):
-    if not hasattr(user, 'team_set'): # User might be anonymous 
-        return None
-    teams = user.team_set.all()
-    if len(teams) > 0:
-        return teams[0]
-    else: return None
 
 from django.views.generic import ListView
 class MessagesView(ListView):
