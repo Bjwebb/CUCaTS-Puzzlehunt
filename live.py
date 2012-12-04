@@ -10,11 +10,7 @@ stuff = []
 
 def handle(request):
     global global_counter, stuff
-    if request.uri == '/':
-        request.send_reply(200,"OK",open('submit.html').read())
-    elif request.uri == '/view':
-        request.send_reply(200,"OK",open('view.html').read())
-    elif request.uri == '/guess':
+    if request.uri == '/guess':
         text = request.input_buffer.read()
         stuff.append(text)
         if len(stuff) > 100:
@@ -22,10 +18,9 @@ def handle(request):
             global_counter += 1
         request.send_reply(200,"OK","")
         e.set()
-    if request.uri.startswith('/wait/'):
+    elif request.uri.startswith('/wait/'):
         counter = int(request.uri[6:])
-        e.wait()
-        if counter == (global_counter + len(stuff)):
+        if counter > (global_counter + len(stuff)):
             e.clear()
             e.wait()
         i = counter - global_counter
@@ -35,6 +30,5 @@ def handle(request):
         request.send_reply(200,"OK",
                 '{"counter":'+str(counter)+', "guesses":['+','.join(stuff[i:])+']}')
 
-#server = HTTPServer(('127.0.0.1', 8001), handle)
-server = HTTPServer(('0.0.0.0', 65300), handle)
+server = HTTPServer(('127.0.0.1', 65300), handle)
 server.serve_forever()
