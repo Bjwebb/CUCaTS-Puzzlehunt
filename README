@@ -1,8 +1,11 @@
 Proper documentation will be written at some point. For now, the follwing bash commands may help you get up and running.
 
+cd hunt
 cd static 
 curl "http://www.srcf.ucam.org/cucats/style.css" | sed s.fonts/./static/fonts/. > style.css
 cd ..
+
+cp secret.py.example secret.py # And edit values as appropriate
 
 python manage.py schemamigration --initial main
 python manage.py schemamigration --initial questionnaire
