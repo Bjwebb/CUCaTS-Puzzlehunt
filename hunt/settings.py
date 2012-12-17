@@ -142,18 +142,40 @@ AUTHENTICATION_BACKENDS = ('pyroven.pyroven_django.RavenAuthBackend',           
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+        'null': {
+            'level': 'DEBUG',
+            'class': 'django.utils.log.NullHandler',
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        #'mail_admins': {
+        #    'level': 'ERROR',
+        #    'class': 'django.utils.log.AdminEmailHandler'
+        #}
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+        'django': {
+            'handlers': ['null'],
             'propagate': True,
+            'level': 'INFO',
         },
+        'django.request': {
+            'handlers': ['console'],#'mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        }
     }
 }
