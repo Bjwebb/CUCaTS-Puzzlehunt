@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block header %}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script language="javascript">
+    $(document).ready(function() {
+        var send = function() {
+            $.post('/puzzles/{{puzzle.pk}}?xhr',
+                    {'solution': this.value} );
+        }
+        $('#solution').bind('change', send);
+        $('#solution').bind('keyup', send);
+    });
+
+counter = 0;
+var callback = function(data) {
+    counter = data.counter; 
+    for (i=0; i<data.guesses.length; i++) {
+        console.log(data.guesses[i]);
+        if (data.guesses[i][4]) {
+            $('#text').prepend('<strong>'+data.guesses[i][2]+'</strong><br/>')
+        }
+        else {
+            $('#text').prepend(data.guesses[i][2]+'<br/>')
+        }
+        $('#test').val(data.guesses[i][2]);
+    }
+    g();
+};
+ 
+var g = function() {
+    $.getJSON('/liveapi/wait/'+counter, callback);
+};
+ 
+$(document).ready(g);
+</script>
+<style>
+.text {
+    height: 150px;
+    overflow-y: scroll;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<input id="test" />
+<div id="text" class="text"></div>
+
+{% endblock %}
+

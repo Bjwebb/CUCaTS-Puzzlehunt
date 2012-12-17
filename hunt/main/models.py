@@ -25,8 +25,8 @@ class Team(models.Model):
     name = models.CharField(max_length=256)
     members = models.ManyToManyField(User)
     puzzles_completed = models.ManyToManyField(Puzzle, blank=True)
-    score1 = models.CharField(max_length=10, default='')
-    score2 = models.CharField(max_length=10, default='')
+    score1 = models.CharField(max_length=10, default='', blank=True)
+    score2 = models.CharField(max_length=10, default='', blank=True)
     active = models.BooleanField(default=True)
     
     def __str__(self):
