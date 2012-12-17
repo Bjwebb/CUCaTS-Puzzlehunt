@@ -8,10 +8,10 @@ from django import forms
 from django.views.decorators.csrf import csrf_exempt                                          
 from django.views.generic import FormView, TemplateView, DetailView, ListView
 from main.models import Puzzle, Team, Message, Announcement, Guess, TeamPuzzle
-import datetime
+import settings
 import Image, ImageDraw
 
-import re, json
+import os, re, json, datetime
 from main.lib import get_team
 
 from pyroven import RavenConfig
@@ -315,3 +315,34 @@ class LiveView(TemplateView):
             "puzzles_json": json.dumps(dict((x.pk, x.name) for x in Puzzle.objects.all())),
             "teams": Team.objects.all(),
             }
+
+
+
+
+
+class UploadFileForm(forms.Form):
+    puzzle = forms.ChoiceField(choices=Puzzle.objects.values_list('id', 'name'))
+    file  = forms.FileField()
+
+class UploadFileView(FormView):
+    template_name = 'upload.html'
+    form_class = UploadFileForm
+
+    @method_decorator(staff_member_required)
+    def dispatch(self, request):
+        return super(UploadFileView, self).dispatch(request)
+
+    def form_valid(self, form):
+        puzzle_id = form.cleaned_data['puzzle']
+        f = form.cleaned_data['file']
+        folder = os.path.join(settings.MEDIA_ROOT,puzzle_id)
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        with open(os.path.join(folder, f.name), 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
+
+        context = super(UploadFileView, self).get_context_data(form=form)
+        context['result'] = settings.MEDIA_URL+os.path.join(puzzle_id, f.name)
+        return self.render_to_response(context)
+

@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
-from hunt.main.views import HomeView, SignupView, PuzzleView, PuzzlesView, LiveView, MessagesView
+from hunt.main.views import HomeView, SignupView, PuzzleView, PuzzlesView, LiveView, MessagesView, UploadFileView
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView
 from django.contrib.admin.views.decorators import staff_member_required
 from main.models import Puzzle, Team, Guess
@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
+    url(r'^upload$', UploadFileView.as_view()),
     url(r'^signup$', SignupView.as_view()),
     url(r'^signup/thankyou$', TemplateView.as_view(template_name="signup_thankyou.html")),
     # Uncomment the next line to enable the admin:
