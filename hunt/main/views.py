@@ -8,7 +8,7 @@ from django import forms
 from django.views.decorators.csrf import csrf_exempt                                          
 from django.views.generic import FormView, TemplateView, DetailView, ListView
 from main.models import Puzzle, Team, Message, Announcement, Guess, TeamPuzzle
-import settings
+import secret, settings
 import Image, ImageDraw
 
 import os, re, json, datetime
@@ -19,7 +19,7 @@ from pyroven.pyroven_django import Raven
 def configure():
     r = Raven()
     if r.config is None:
-        r.config = RavenConfig("/home/bjwebb/django/hunt/raven.ini")
+        r.config = RavenConfig(os.path.join(secret.ABSPATH, "raven.ini"))
 
 def raven_login(request):
     # Ensure we're properly configured
