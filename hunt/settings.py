@@ -2,7 +2,7 @@
 
 import secret
 
-DEBUG = True 
+DEBUG = secret.DEBUG 
 TEMPLATE_DEBUG = DEBUG
 
 import datetime
