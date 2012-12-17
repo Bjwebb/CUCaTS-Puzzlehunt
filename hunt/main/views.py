@@ -12,7 +12,7 @@ import settings
 import Image, ImageDraw
 
 import os, re, json, datetime
-from main.lib import get_team
+from main.lib import get_team, test_puzzle_access
 
 from pyroven import RavenConfig
 from pyroven.pyroven_django import Raven
@@ -53,6 +53,14 @@ def liveapi(request, path):
     response['X-Accel-Redirect'] = '/_liveapi/' + path
     return response
 
+@login_required
+def media(request, path):
+    pid = int(re.split('/', path)[0])
+    test_puzzle_access(request.user, Puzzle.objects.get(pk=pid))
+    response = HttpResponse()
+    response['Content-Type'] = ''
+    response['X-Accel-Redirect'] = '/_media/' + path
+    return response
 
 
 class SignupForm(forms.Form):
@@ -133,21 +141,6 @@ class HomeView(ListView):
                 announcement.teams_read.add(team)
         return super(HomeView, self).get(self, request)
 
-from django.http import Http404
-
-def test_puzzle_access(user, puzzle):
-    if not user.is_staff:
-        team = get_team(user)
-        if team == None: raise Http404
-        # FIXME Doing this twice
-        if puzzle.fromnode == 0: routes = [ 0 ]
-        else: routes = team.puzzles_completed.filter(tonode=puzzle.fromnode)
-        # Disable the double puzzle messages for now
-        if False and (puzzle.fromnode == 7 or puzzle.fromnode == 14):
-            if len(routes) < 2:
-                raise Http404
-        elif len(routes) < 1:
-            raise Http404
  
 class PuzzleView(DetailView):
     model = Puzzle
@@ -321,8 +314,10 @@ class LiveView(TemplateView):
 
 
 class UploadFileForm(forms.Form):
-    puzzle = forms.ChoiceField(choices=Puzzle.objects.values_list('id', 'name'))
-    file  = forms.FileField()
+    def __init__(self, *args, **kwargs):
+        super(UploadFileForm, self).__init__(*args, **kwargs)
+        self.fields['puzzle'] = forms.ChoiceField(choices=Puzzle.objects.values_list('id', 'name'))
+        self.fields['file']  = forms.FileField()
 
 class UploadFileView(FormView):
     template_name = 'upload.html'
