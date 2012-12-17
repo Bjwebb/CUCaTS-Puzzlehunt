@@ -4,27 +4,27 @@
 {% block header %}
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script language="javascript">
-    $(document).ready(function() {
-        var send = function() {
-            $.post('/puzzles/{{puzzle.pk}}?xhr',
-                    {'solution': this.value} );
-        }
-        $('#solution').bind('change', send);
-        $('#solution').bind('keyup', send);
-    });
-
 counter = 0;
 var callback = function(data) {
     counter = data.counter; 
     for (i=0; i<data.guesses.length; i++) {
         console.log(data.guesses[i]);
+        teamcol = $('#teamcol'+data.guesses[i][1]);
+        row = teamcol.find('tr#puzzlerow'+data.guesses[i][0]);
+        if (row.length == 0) {
+            row = $('#puzzlerowtmpl').clone()
+            row.attr('id', 'puzzlerow'+data.guesses[i][0]);
+            row.find('h4').find('a').append(puzzles[data.guesses[i][0]]);
+            row.find('h4').find('a').attr('href', '/puzzles/'+data.guesses[i][0]);
+        }
         if (data.guesses[i][4]) {
-            $('#text').prepend('<strong>'+data.guesses[i][2]+'</strong><br/>')
+            row.find('.text').prepend('<strong>'+data.guesses[i][2]+'</strong><br/>')
         }
         else {
-            $('#text').prepend(data.guesses[i][2]+'<br/>')
+            row.find('.text').prepend(data.guesses[i][2]+'<br/>')
         }
-        $('#test').val(data.guesses[i][2]);
+        teamcol.find('table').prepend(row)    
+        row.find('.test').val(data.guesses[i][2]);
     }
     g();
 };
@@ -34,19 +34,53 @@ var g = function() {
 };
  
 $(document).ready(g);
+puzzles = {{puzzles_json|safe}};
 </script>
 <style>
 .text {
     height: 150px;
     overflow-y: scroll;
 }
+#hiddenmagic {
+    display: none;
+}
+h4 {
+    margin: 0;
+}
+td.puzz {
+    padding: 0;
+}
+td {
+    vertical-align: top;
+}
 </style>
 {% endblock %}
 
 {% block content %}
 
-<input id="test" />
-<div id="text" class="text"></div>
+<h2>Live Dashbord</h2>
+
+<table>
+    <tr>
+{% for team in teams %}
+<td id="teamcol{{team.pk}}">
+    <h3>{{team.name}}</h3>
+    <table>
+    </table>
+</td>
+{% endfor %}
+    </tr>
+</table>
+
+<table id="hiddenmagic">
+<tr id="puzzlerowtmpl">
+<td class="puzz">
+<h4><a></a></h4>
+<input class="test" />
+<div class="text" class="text"></div>
+</td>
+</tr>
+</table>
 
 {% endblock %}
 

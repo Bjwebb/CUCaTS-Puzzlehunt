@@ -1,6 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
-from django.contrib import admin
-from hunt.main.views import HomeView, SignupView, PuzzleView, PuzzlesView, MessagesView
+from hunt.main.views import HomeView, SignupView, PuzzleView, PuzzlesView, LiveView, MessagesView
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView
 from django.contrib.admin.views.decorators import staff_member_required
 from main.models import Puzzle, Team, Guess
@@ -8,7 +7,7 @@ from questionnaire.views import QuestionnaireView
 
 
 # Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
+from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -16,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^$', HomeView.as_view()),
     url(r'^messages/$', MessagesView.as_view()),
     url(r'^guesses/$', staff_member_required(ListView.as_view(queryset=Guess.objects.all().order_by("-time")))),
-    url(r'^live/$', staff_member_required(TemplateView.as_view(template_name="live.html"))),
+    url(r'^live/$', staff_member_required(LiveView.as_view())),
     url(r'^liveapi/(.*)$', 'main.views.liveapi'),
     url(r'^puzzles/$', PuzzlesView.as_view()),
     url(r'^puzzles/(?P<layout>.*).png$', "main.views.puzzlesimg"),

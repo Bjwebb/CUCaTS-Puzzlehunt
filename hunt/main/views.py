@@ -6,11 +6,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django import forms
 from django.views.decorators.csrf import csrf_exempt                                          
+from django.views.generic import FormView, TemplateView, DetailView, ListView
 from main.models import Puzzle, Team, Message, Announcement, Guess, TeamPuzzle
 import datetime
 import Image, ImageDraw
 
-import re
+import re, json
 from main.lib import get_team
 
 from pyroven import RavenConfig
@@ -60,7 +61,6 @@ class SignupForm(forms.Form):
     player2 = forms.CharField(required=False)
     player3 = forms.CharField(required=False)
 
-from django.views.generic import FormView 
 class SignupView(FormView):
     template_name = 'signup.html'
     form_class = SignupForm
@@ -84,7 +84,6 @@ class SignupView(FormView):
 
 
 
-from django.views.generic import ListView
 class MessagesView(ListView):
     template_name = "main/message_list.html"
     model = Message
@@ -134,7 +133,6 @@ class HomeView(ListView):
                 announcement.teams_read.add(team)
         return super(HomeView, self).get(self, request)
 
-from django.views.generic import DetailView
 from django.http import Http404
 
 def test_puzzle_access(user, puzzle):
@@ -209,7 +207,6 @@ class PuzzleView(DetailView):
 
 
 
-from django.views.generic import TemplateView
 
 
 class PuzzlesView(TemplateView):
@@ -305,3 +302,16 @@ def puzzlesimg(request, layout):
     img.save(response, "PNG")
     return response
 
+
+
+class LiveView(TemplateView):
+    template_name = "live.html"
+    @method_decorator(staff_member_required)
+    def dispatch(self, request):
+        return super(LiveView, self).dispatch(request)
+        
+    def get_context_data(self, **kwargs):
+        return {
+            "puzzles_json": json.dumps(dict((x.pk, x.name) for x in Puzzle.objects.all())),
+            "teams": Team.objects.all(),
+            }
