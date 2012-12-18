@@ -166,26 +166,35 @@ class PuzzleView(DetailView):
         team = get_team(self.request.user)
         
         context = super(PuzzleView, self).get_context_data(**kwargs)
-        solution = None
-        if "solution" in self.request.POST:
-            solution = self.request.POST["solution"]
-        if "solution" in self.request.GET:
-            solution = self.request.GET["solution"]
+        guess_text = None
+        if "guess" in self.request.POST:
+            guess_text = self.request.POST["guess"]
+        if "guess" in self.request.GET:
+            guess_text = self.request.GET["guess"]
         if 'xhr' in self.request.GET:
-            if team:
-                guess = Guess(puzzle=self.object, team=team, text=solution, submitted=False)
-                guess.save()
+            guess = Guess(puzzle=self.object,
+                    team=team,
+                    text=guess_text,
+                    submitted=False,
+                    pagehit = self.request.pagehit)
+            guess.save()
             return []
-        if solution:
-            if team:
-                guess = Guess(puzzle=self.object, team=team, text=solution, submitted=True)
-                guess.save()
-            if re.match("^"+self.object.solution+"$", solution):
-                context['solution'] = "Well done you solved this puzzle. See the new <a href=\"/puzzles/\">puzzles</a>."
+        if guess_text:
+            context['submitted'] = True
+            if re.match("^"+self.object.solution+"$", guess_text):
+                context['correct'] = True
                 if team:
-                        team.puzzles_completed.add(self.object)
+                    team.puzzles_completed.add(self.object)
             else:
-                context['solution'] = "Sorry, that is incorrect."
+                context['correct'] = False 
+            guess = Guess(puzzle=self.object,
+                    team=team,
+                    text=guess_text,
+                    submitted=True,
+                    correct=context['correct'],
+                    pagehit = self.request.pagehit)
+            guess.save()
+
         context["completed"] = self.request.user.is_staff or (self.object in team.puzzles_completed.all())
         context["clue"] = None
         if context["completed"]: context["clue"] = self.object.clue

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from hunt.track.models import PageHit
 import urllib2
 import json
 
@@ -39,17 +40,25 @@ class TeamPuzzle(models.Model):
 
 class Guess(models.Model):
     puzzle = models.ForeignKey(Puzzle)
-    team = models.ForeignKey(Team)
+    team = models.ForeignKey(Team, null=True)
     text = models.CharField(max_length=256) 
     time = models.DateTimeField(auto_now_add=True)
     submitted = models.BooleanField(default=True)
+    pagehit = models.ForeignKey(PageHit, null=True)
+    correct = models.BooleanField(default=False)
 
     def save(self,*args,**kwargs):
-        print self.text
         super(Guess,self).save(*args,**kwargs)
-        urllib2.urlopen("http://127.0.0.1:8001/guess",
-                json.dumps([self.puzzle.pk,self.team.pk,self.text,self.time.isoformat(),self.submitted])
-                )
+        try:
+            urllib2.urlopen("http://127.0.0.1:8001/guess",
+                    json.dumps([self.puzzle.pk,
+                        (self.team.pk if self.team else -1),
+                        self.text,
+                        self.time.isoformat(),
+                        self.submitted])
+                    )
+        except urllib2.URLError:
+            pass
 
 class Announcement(models.Model):
     title = models.CharField(max_length=256, default="")

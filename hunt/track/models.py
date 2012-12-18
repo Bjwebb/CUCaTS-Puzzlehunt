@@ -8,6 +8,9 @@ class PageHit(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User)
 
+    def __unicode__(self):
+        return self.user.username+u' '+self.page
+
 EVENTS = (
     ("T", "Tick"),
     ("F", "Focus"),

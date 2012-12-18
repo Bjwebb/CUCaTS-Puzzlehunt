@@ -6,11 +6,11 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var send = function() {
-            $.post('/puzzles/{{puzzle.pk}}?xhr',
-                    {'solution': this.value} );
+        $.post('/puzzles/{{puzzle.pk}}?xhr&ph={{pagehit_id}}',
+                    {'guess': this.value} );
         }
-        $('#solution').bind('change', send);
-        $('#solution').bind('keyup', send);
+        $('#guess').bind('change', send);
+        $('#guess').bind('keyup', send);
     });
 </script>
 {% endblock %}
@@ -56,18 +56,22 @@
     <form method="post">
     <table>
     <tr>
-        <td class="highlight cl3">Solution:</td>
+        <td class="highlight cl3">Guess:</td>
         <td>
-            <input type="text" name="solution" id="solution" />
+            <input type="text" name="guess" id="guess" />
             {% csrf_token %}
             <input type="submit" value="Submit" />
         </td>
     </tr>
-    {% if solution %}
+    {% if submitted %}
     <tr>
         <td class="highlight cl3">Response:</td>
         <td>
-            {{ solution|safe }}
+            {% if correct %}
+                Well done you solved this puzzle. See the new <a href="/puzzles/">puzzles</a>.
+            {% else %}
+                Sorry, that is incorrect.
+            {% endif %}
         </td>
     </tr> 
     {% endif %}
