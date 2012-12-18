@@ -19,4 +19,5 @@ urlpatterns = patterns('',
     url(r'^q/', include(questionnaire.urls)),
     url(r'^track/', include(track.urls)),
     url(r'^', include(main.urls)),
+    url('^', include('django.contrib.flatpages.urls')),
 )

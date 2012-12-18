@@ -45,9 +45,15 @@ $(document).ready(function() {
                                     </tr><tr class='links'>
                                     <td class='links'>
 <span class='l'>
+{% load flatpages %}
+{% get_flatpages for user as flatpages %}
     <a href="{% url 'home' %}">Home</a>
     {% if announcement_count %}({{announcement_count}}){%endif%}
         &nbsp; &#183; &nbsp; 
+    {% for page in flatpages %}
+        <a href="{{ page.url }}">{{ page.title }}</a></li>
+        &nbsp; &#183; &nbsp; 
+    {% endfor %}
     <a href="{% url 'teams' %}">Teams</a>
 {% if user.is_authenticated %}
         &nbsp; &#183; &nbsp; 
