@@ -10,12 +10,12 @@
     
 {% if hunt.start < a.time %}
  {% if hunt.end > a.time %}
-    {{hunt.start|timesince:a.time}} into the extension
+    {{hunt.start|timesince:a.time}} into the puzzlehunt 
  {% else %}
-    After the extension
+    After the puzzlehunt
  {% endif %}
 {% else %}
-    Before the extension
+    Before the puzzlehunt
 {% endif %}
 
     </div>
