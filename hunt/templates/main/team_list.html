@@ -18,7 +18,7 @@
     {% for team in object_list %}
     <tr>
     {% if user.is_staff %}
-        <th><a href="/teams/{{team.pk}}">{{ team.name }}</a></th>
+        <th><a href="{% url 'team' team.pk %}">{{ team.name }}</a></th>
     {% else %}
         <th>{{ team.name }}</th>
     {% endif %}

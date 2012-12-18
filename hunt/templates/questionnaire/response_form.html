@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load url from future %}
 
 {% block content %}
 
@@ -22,7 +23,7 @@
         {% for form,puzzle in forms %}
         <tr>
         <td>
-            <a href="/puzzles/{{puzzle.pk}}">{{ puzzle.name }}</a>
+            <a href="{% url 'puzzle' puzzle.pk %}">{{ puzzle.name }}</a>
             {{ form.puzzle.as_hidden }}
         </td><td>
             {{ form.interest }}

@@ -1,10 +1,10 @@
 from django.views.generic import FormView, ListView
+from django.contrib.auth.models import User
 from main.models import Team, Message, Announcement
 from django import forms
 from main.lib import get_team
 
 class HomeView(ListView):
-    template_name = "home.html"
     queryset = Announcement.objects.order_by('-time')
 
     def get(self,request):
@@ -22,7 +22,7 @@ class SignupForm(forms.Form):
     player3 = forms.CharField(required=False)
 
 class SignupView(FormView):
-    template_name = 'signup.html'
+    template_name = 'main/signup.html'
     form_class = SignupForm
     success_url = '/signup/thankyou'
 

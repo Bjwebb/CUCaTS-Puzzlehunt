@@ -13,7 +13,7 @@ class UploadFileForm(forms.Form):
         self.fields['file']  = forms.FileField()
 
 class UploadFileView(FormView):
-    template_name = 'upload.html'
+    template_name = 'main/upload.html'
     form_class = UploadFileForm
 
     @method_decorator(staff_member_required)
@@ -36,7 +36,7 @@ class UploadFileView(FormView):
 
 
 class LiveView(TemplateView):
-    template_name = "live.html"
+    template_name = "main/live.html"
     @method_decorator(staff_member_required)
     def dispatch(self, request):
         return super(LiveView, self).dispatch(request)

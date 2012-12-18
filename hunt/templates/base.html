@@ -1,3 +1,4 @@
+{% load url from future %}
 <!doctype html>
 <html>
 <head>
@@ -42,32 +43,31 @@ $(document).ready(function() {
                 <font face='sharereg' style='font-size:20pt;font-weight:bold'>Puzzlehunt</font>
                                 </td>
                                     </tr><tr class='links'>
-                                            <td class='links'><span class='l'>
-
-    <a href="/">Home</a>
+                                    <td class='links'>
+<span class='l'>
+    <a href="{% url 'home' %}">Home</a>
     {% if announcement_count %}({{announcement_count}}){%endif%}
         &nbsp; &#183; &nbsp; 
-    <a href="/teams">Teams</a>
+    <a href="{% url 'teams' %}">Teams</a>
 {% if user.is_authenticated %}
         &nbsp; &#183; &nbsp; 
-    <a href="/puzzles">Puzzles</a>
+    <a href="{% url 'puzzles' %}">Puzzles</a>
         &nbsp; &#183; &nbsp; 
-    <a href="/messages">Messages</a>
+    <a href="{% url 'messages' %}">Messages</a>
     {% if message_count %}({{message_count}}){%endif%}
 {% endif %}
         &nbsp; &#183; &nbsp; 
-    <a href="/q">Questionnaire</a>
+    <a href="{% url 'questionnaire' %}">Questionnaire</a>
     {% if user.is_staff %}
         &nbsp; &#183; &nbsp; 
         Judges:
         &nbsp; &#183; &nbsp; 
-        <a href="/guesses">Guesses</a>
+        <a href="{% url 'guesses' %}">Guesses</a>
         &nbsp; &#183; &nbsp; 
-        <a href="/live">Live</a>
+        <a href="{% url 'live' %}">Live</a>
         &nbsp; &#183; &nbsp; 
-        <a href="/upload">Upload</a>
+        <a href="{% url 'upload' %}">Upload</a>
     {% endif %}
-
 </span>
 
 &nbsp;<span style='position:absolute;top:0px;right:0px;padding:8px;'> 
@@ -89,9 +89,9 @@ $(document).ready(function() {
     {% if user.is_staff %} (Judge) {% else %}
     Team: {{user.team_set.all|first}}{% endif %}
         &nbsp; &#183; &nbsp; 
-    <a href="/accounts/logout/">Logout</a>
+    <a href="{% url 'django.contrib.auth.views.logout_then_login' %}">Logout</a>
 {% else %}
-    <a href="/accounts/login/">Login</a>
+    <a href="{% url 'django.contrib.auth.views.login' %}">Login</a>
 {% endif %}
 </span>
                                                                 </td>

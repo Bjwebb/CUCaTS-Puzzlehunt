@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt                                          
 class PuzzleView(DetailView):
     model = Puzzle
-    template_name = "main/puzzle_detail.html"
 
     @method_decorator(login_required)
     @method_decorator(csrf_exempt)
@@ -74,7 +73,7 @@ class PuzzleView(DetailView):
         return context
 
 class PuzzlesView(TemplateView):
-    template_name = "puzzles.html"
+    template_name = "main/puzzles.html"
     puzzles_completed = None
     team = None
     @method_decorator(login_required)
