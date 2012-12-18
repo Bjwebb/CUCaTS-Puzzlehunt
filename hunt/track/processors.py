@@ -1,2 +1,5 @@
 def pagehit(request):
-    return {'pagehit_id': request.pagehit.pk}
+    try:
+        return {'pagehit_id': request.pagehit.pk}
+    except AttributeError:
+        return {}

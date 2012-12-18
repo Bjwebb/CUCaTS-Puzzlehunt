@@ -6,6 +6,7 @@
 <link rel='stylesheet' href='{{STATIC_URL}}style.css'>
 <link rel='stylesheet' href='{{STATIC_URL}}site.css'>
 <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+{% if pagehit_id %}
 <script type="text/javascript">
 $(document).ready(function() {
     focused = -1;
@@ -30,6 +31,7 @@ $(document).ready(function() {
     }, 60000);
 });
 </script>
+{% endif %}
 {% block header %}{% endblock %}
 </head>
 <body>
