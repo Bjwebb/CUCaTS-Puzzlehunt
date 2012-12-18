@@ -13,7 +13,7 @@
     <p>All reachable puzzles are listed here. Feel free to leave any you did not reach/complete blank if you want.</p>
     <table>
         {% comment %}{{ formset.management_form }}{% endcomment %}
-        <input type="hidden" name="puzzleresponse_set-TOTAL_FORMS" value="22" id="id_puzzleresponse_set-TOTAL_FORMS" /><input type="hidden" name="puzzleresponse_set-INITIAL_FORMS" value="0" id="id_puzzleresponse_set-INITIAL_FORMS" /><input type="hidden" name="puzzleresponse_set-MAX_NUM_FORMS" id="id_puzzleresponse_set-MAX_NUM_FORMS" />
+        <input type="hidden" name="puzzleresponse_set-TOTAL_FORMS" value="{{ formset.total_form_count }}" id="id_puzzleresponse_set-TOTAL_FORMS" /><input type="hidden" name="puzzleresponse_set-INITIAL_FORMS" value="0" id="id_puzzleresponse_set-INITIAL_FORMS" /><input type="hidden" name="puzzleresponse_set-MAX_NUM_FORMS" id="id_puzzleresponse_set-MAX_NUM_FORMS" />
         <tr>
             <th>Puzzle</th>
             <th>Interesting</th>
