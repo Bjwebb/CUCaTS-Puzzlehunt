@@ -12,6 +12,7 @@ HUNT = {
 }
 TEMPLATE_CONTEXT_PROCESSORS = (
     'main.processors.hunt',
+    'track.processors.pagehit',
     'django.core.context_processors.static',
     'django.contrib.auth.context_processors.auth',
     )
@@ -105,7 +106,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'main.middleware.LockDown'
+    'main.middleware.LockDown',
+    'track.middleware.Log'
 )
 
 ROOT_URLCONF = 'hunt.urls'
@@ -119,6 +121,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'hunt.main',
+    'hunt.track',
     'hunt.questionnaire',
     'django.contrib.auth',
     'django.contrib.contenttypes',

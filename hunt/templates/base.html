@@ -5,15 +5,39 @@
 <title>CUCaTS Puzzlehunt</title>
 <link rel='stylesheet' href='{{STATIC_URL}}style.css'>
 <link rel='stylesheet' href='{{STATIC_URL}}site.css'>
+<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    focused = -1;
+
+    $(window).focus(function() {
+        if (focused != 1) {
+            console.log('Focus ');
+            $.get('/track/add/{{pagehit_id}}/F');
+            focused = 1;
+        }
+    });
+    $(window).blur(function() {
+        if (focused != 0) {
+            console.log('Blur');
+            $.get('/track/add/{{pagehit_id}}/B');
+            focused = 0;
+        }
+    });
+    setInterval(function() {
+        console.log('Tick');
+        $.get('/track/add/{{pagehit_id}}/T');
+    }, 60000);
+});
+</script>
 {% block header %}{% endblock %}
-</style>
 </head>
 <body>
     <div class='title'><img src='{{STATIC_URL}}cucats-logo.png' border='0'></div>
 <table class='root'>
     <tr class='top'>
             <td class='top'>
-                        <font face='sharereg' style='font-size:20pt;font-weight:bold'>Puzzlehunt</font>
+                <font face='sharereg' style='font-size:20pt;font-weight:bold'>Puzzlehunt{{pagehit_id}}</font>
                                 </td>
                                     </tr><tr class='links'>
                                             <td class='links'><span class='l'>

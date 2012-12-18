@@ -3,7 +3,7 @@
 
 {% block header %}
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script language="javascript">
+<script type="text/javascript">
     $(document).ready(function() {
         var send = function() {
             $.post('/puzzles/{{puzzle.pk}}?xhr',

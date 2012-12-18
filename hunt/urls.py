@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.views.generic import RedirectView
 import main.urls
 import questionnaire.urls
+import track.urls
 from django.contrib import admin
 admin.autodiscover()
 
@@ -16,5 +17,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^q/', include(questionnaire.urls)),
+    url(r'^track/', include(track.urls)),
     url(r'^', include(main.urls)),
 )
