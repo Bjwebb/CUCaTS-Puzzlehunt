@@ -13,13 +13,15 @@ class QuestionnaireForm(ModelForm):
 from django.forms.models import inlineformset_factory
 
 class QuestionnaireView(TemplateView):
-    template_name="questionnaire/response_form.html"
+    template_name = "questionnaire/response_form.html"
 
     def post(self, request):
         form = QuestionnaireForm(request.POST)
         response = form.save(commit=False)
-        try: response.user = request.user
-        except ValueError: pass
+        try:
+            response.user = request.user
+        except ValueError:
+            pass
         response.save()
         PuzzleFormSet = inlineformset_factory(Response, PuzzleResponse)
         pfs = PuzzleFormSet(request.POST, instance=response)

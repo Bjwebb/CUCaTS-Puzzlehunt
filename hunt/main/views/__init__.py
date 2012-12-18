@@ -7,7 +7,7 @@ from main.lib import get_team
 class HomeView(ListView):
     queryset = Announcement.objects.order_by('-time')
 
-    def get(self,request):
+    def get(self, request):
         team = get_team(self.request.user)
         if team:
             for announcement in self.queryset.exclude(teams_read=team):
@@ -40,7 +40,7 @@ class SignupView(FormView):
         add_player(form.cleaned_data['player1'], team)
         add_player(form.cleaned_data['player2'], team)
         add_player(form.cleaned_data['player3'], team)
-        return super(FormView, self).form_valid(form)
+        return super(SignupView, self).form_valid(form)
 
 
 class MessagesView(ListView):
@@ -65,7 +65,7 @@ class MessagesView(ListView):
         return queryset
 
     def get_context_data(self, **kwargs):
-        context = super(ListView, self).get_context_data(**kwargs)
+        context = super(MessagesView, self).get_context_data(**kwargs)
         context['team'] = self.team
         return context
 
@@ -77,7 +77,9 @@ class MessagesView(ListView):
         else:
             team = get_team(self.request.user)
             if team is not None:
-                message = Message(team=team, text=request.POST["msg"], judges=False) 
+                message = Message(team=team,
+                    text=request.POST["msg"],
+                    judges=False) 
                 message.save()
         return self.get(request) 
    

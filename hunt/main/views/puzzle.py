@@ -8,7 +8,8 @@ import re
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt                                          
+from django.views.decorators.csrf import csrf_exempt
+
 class PuzzleView(DetailView):
     model = Puzzle
 
@@ -61,14 +62,18 @@ class PuzzleView(DetailView):
                     pagehit = self.request.pagehit)
             guess.save()
 
-        context["completed"] = self.request.user.is_staff or (self.object in team.puzzles_completed.all())
+        context["completed"] = (
+            self.request.user.is_staff
+            or (self.object in team.puzzles_completed.all())
+        )
         context["clue"] = None
         if context["completed"]: context["clue"] = self.object.clue
         
         context["teampuzzle"] = None
         if team:
             try:
-                context["teampuzzle"] = TeamPuzzle.objects.get(puzzle=self.object, team=team)
+                context["teampuzzle"] = TeamPuzzle.objects.get(
+                    puzzle=self.object, team=team)
             except TeamPuzzle.DoesNotExist: pass
         return context
 
@@ -160,7 +165,10 @@ def puzzlesimg(request, layout):
             c=0
             i+=1
             continue
-        draw.line([(50+100*int(layout[i]), 0), (50+100*int(layout[i+1]), 49)], fill=color[c], width=int(layout[i+2]))
+        draw.line([
+                (50+100*int(layout[i]), 0),
+                (50+100*int(layout[i+1]), 49)
+            ], fill=color[c], width=int(layout[i+2]))
         i+=3
         c+=1
     response = HttpResponse(mimetype="image/png")
