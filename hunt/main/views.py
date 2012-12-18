@@ -38,8 +38,7 @@ def raven_return(request):
     # See if this is a valid token
     user = authenticate(response_str=token)
     if user is None:
-        pass # Some sort of err
-        return HttpResponse("balls")
+        return HttpResponse("Raven did not return a username.")
     else:
         login(request, user)
         return HttpResponseRedirect('/')
