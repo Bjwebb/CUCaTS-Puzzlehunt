@@ -18,7 +18,7 @@ class Puzzle(models.Model):
     # Clue for following puzzles
     clue = models.TextField(default="", blank=True)
     
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     
@@ -30,7 +30,7 @@ class Team(models.Model):
     score2 = models.CharField(max_length=10, default='', blank=True)
     active = models.BooleanField(default=True)
     
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 class TeamPuzzle(models.Model):
@@ -66,8 +66,8 @@ class Announcement(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     teams_read = models.ManyToManyField(Team, blank=True)
 
-    def __str__(self):
-        return str(self.time)+" . . . . . "+self.title
+    def __unicode__(self):
+        return unicode(self.time)+" . . . . . "+self.title
 
 class Message(models.Model):
     team = models.ForeignKey(Team)

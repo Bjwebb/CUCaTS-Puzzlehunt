@@ -23,7 +23,7 @@ class Response(models.Model):
     other_comments = models.TextField(default="", blank=True)
     would_you_compete_again = models.CharField(max_length=2, choices=COMPETE, default="", blank=True)
 
-    def __str__(self): return str(self.user)
+    def __unicode__(self): return unicode(self.user)
 
 RATING_CHOICES = (
     (-1, ''),
@@ -40,5 +40,5 @@ class PuzzleResponse(models.Model):
     difficulty = models.IntegerField(default=-1, choices=RATING_CHOICES)
     interest = models.IntegerField(default=-1, choices=RATING_CHOICES)
     
-    def __str__(self): return str(self.response.user)+" "+str(self.puzzle)+" "+str(self.interest)+" "+str(self.difficulty)
+    def __unicode__(self): return unicode(self.response.user)+u' '+unicode(self.puzzle)+u' '+str(self.interest)+u' '+str(self.difficulty)
 
