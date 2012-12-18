@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django import forms
 from django.views.decorators.csrf import csrf_exempt                                          
 from django.views.generic import FormView, TemplateView, DetailView, ListView
+from django.core.exceptions import PermissionDenied
 from main.models import Puzzle, Team, Message, Announcement, Guess, TeamPuzzle
 import secret, settings
 import Image, ImageDraw
@@ -216,8 +217,10 @@ class PuzzlesView(TemplateView):
                 
         else:
             teams = request.user.team_set.all()
-            if teams > 0:
+            if len(teams) > 0:
                 self.puzzles_completed = teams[0].puzzles_completed
+            else:
+                raise PermissionDenied
         return super(PuzzlesView, self).dispatch(request, pk=pk)
         
     def get_context_data(self, **kwargs):
