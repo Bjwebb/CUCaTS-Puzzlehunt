@@ -6,6 +6,7 @@ cd ..
 
 cp secret.py.example secret.py # And edit values as appropriate
 
+python manage.py collectstatic
 python manage.py schemamigration --initial main
 python manage.py schemamigration --initial questionnaire
 python manage.py syncdb

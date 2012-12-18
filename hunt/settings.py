@@ -12,6 +12,7 @@ HUNT = {
 }
 TEMPLATE_CONTEXT_PROCESSORS = (
     'main.processors.hunt',
+    'django.core.context_processors.static',
     'django.contrib.auth.context_processors.auth',
     )
 
@@ -133,7 +134,10 @@ INSTALLED_APPS = (
 )
 
 
-AUTHENTICATION_BACKENDS = ('pyroven.pyroven_django.RavenAuthBackend',                             'django.contrib.auth.backends.ModelBackend')
+AUTHENTICATION_BACKENDS = (
+    'pyroven.pyroven_django.RavenAuthBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
