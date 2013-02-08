@@ -1,8 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.views.generic import RedirectView
-import main.urls
-import questionnaire.urls
-import track.urls
+
 from django.contrib import admin
 admin.autodiscover()
 
@@ -16,8 +14,8 @@ urlpatterns = patterns('',
     url(r'^accounts/profile/$', RedirectView.as_view(url='/puzzles/')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^q/', include(questionnaire.urls)),
-    url(r'^track/', include(track.urls)),
-    url(r'^', include(main.urls)),
-    url('^', include('django.contrib.flatpages.urls')),
+    url(r'^q/', include('questionnaire.urls')),
+    url(r'^track/', include('track.urls')),
+    url('^', include('main.urls')),
+    url('^(.*/)$', 'django.contrib.flatpages.views.flatpage'),
 )
