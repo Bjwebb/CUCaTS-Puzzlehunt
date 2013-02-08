@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from hunt.track.models import PageHit
+from track.models import PageHit
 import urllib2
 import json
 

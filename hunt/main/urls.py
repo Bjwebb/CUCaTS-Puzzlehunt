@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, url
-from hunt.main.views import HomeView, SignupView, MessagesView
-from hunt.main.views.puzzle import PuzzleView, PuzzlesView
-from hunt.main.views.judges import LiveView, UploadFileView
+from main.views import HomeView, SignupView, MessagesView
+from main.views.puzzle import PuzzleView, PuzzlesView
+from main.views.judges import LiveView, UploadFileView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.contrib.admin.views.decorators import staff_member_required
 from main.models import Team, Guess

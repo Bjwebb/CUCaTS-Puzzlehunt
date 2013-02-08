@@ -1,5 +1,5 @@
 from django.contrib import admin
-from hunt.main.models import *
+from main.models import *
 
 admin.site.register(Puzzle)
 admin.site.register(Team)
