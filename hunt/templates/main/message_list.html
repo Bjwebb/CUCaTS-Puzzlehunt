@@ -7,12 +7,27 @@
 
 {% if user.is_staff and not team %}
 
+<table>
+    <tr>
+        <th>Team</th>
+        <th>Messages (Unread)</th>
+        <th>Last message</th>
+    </tr>
 {% for team in object_list %}
-    <p>
-    <a href="{%url 'messages' %}?team={{team.pk}}">{{team.name}}</a>
-    ({{team.unread_message_count}})
-    </p>
+    <tr>
+        <td>
+            <a href="{%url 'messages' %}?team={{team.pk}}">{{team.name}}</a>
+        </td>
+        <td>
+            {{team.message_set.count}}
+            ({{team.unread_message_count}})
+        </td>
+        <td>
+            {{team.message_set.all.0.text|truncatewords:20}}
+        </td>
+    </tr>
 {% endfor %}
+</table>
 
 {% else %}
 
