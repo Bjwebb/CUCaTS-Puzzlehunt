@@ -1,10 +1,13 @@
 import settings
 import datetime
-from main.models import Message, Announcement
+from main.models import Message, Announcement, Hunt
 from main.views import get_team
 
 def hunt(request):
-    h = settings.HUNT
+    try:
+        h = Hunt.objects.filter(active=True).values()[0]
+    except IndexError:
+        h = {}
     h["now"] = datetime.datetime.now()
     # TODO Separate this out
     if request.user.is_staff:

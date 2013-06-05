@@ -5,11 +5,6 @@ import secret
 DEBUG = secret.DEBUG 
 TEMPLATE_DEBUG = DEBUG
 
-import datetime
-HUNT = {
-    'start': datetime.datetime(2012, 06, 16, 21, 30, 00),
-    'end': datetime.datetime(2013, 06, 17, 03, 30, 00)
-}
 TEMPLATE_CONTEXT_PROCESSORS = (
     'main.processors.hunt',
     'track.processors.pagehit',
