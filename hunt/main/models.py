@@ -9,6 +9,7 @@ class Hunt(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     active = models.BooleanField(default=True)
+    debriefed = models.BooleanField(default=False)
 
 class Puzzle(models.Model):
     name = models.CharField(max_length=256, default="")

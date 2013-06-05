@@ -62,8 +62,10 @@ $(document).ready(function() {
     <a href="{% url 'messages' %}">Messages</a>
     {% if message_count %}({{message_count}}){%endif%}
 {% endif %}
+    {% if hunt.debriefed %}
         &nbsp; &#183; &nbsp; 
     <a href="{% url 'questionnaire' %}">Questionnaire</a>
+    {% endif %}
     {% if user.is_staff %}
         &nbsp; &#183; &nbsp; 
         Judges:

@@ -1,9 +1,10 @@
 # Create your views here.
 from django.forms import ModelForm, CharField
 from questionnaire.models import *
-from main.models import Puzzle
+from main.models import Puzzle, Hunt
 from django.views.generic import CreateView, TemplateView
 from django.http import HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
 
 class QuestionnaireForm(ModelForm):
     class Meta:
@@ -14,6 +15,12 @@ from django.forms.models import inlineformset_factory
 
 class QuestionnaireView(TemplateView):
     template_name = "questionnaire/response_form.html"
+
+    def dispatch(self, request):
+        if Hunt.objects.filter(active=True)[0].debriefed:
+            return super(QuestionnaireView, self).dispatch(request)
+        else:
+            raise PermissionDenied
 
     def post(self, request):
         form = QuestionnaireForm(request.POST)
