@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+{% block header %}
+<style>
+    .correct { font-weight: bold }
+    .nonsub { opacity: 0.5 }
+</style>
+{% endblock %}
 {% load url from future %}
 
 {% block content %}
@@ -6,7 +12,7 @@
 
 <table>
     {% for guess in object_list %}
-    <tr>
+    <tr{% if guess.correct %} class="correct"{% elif not guess.submitted %} class="nonsub"{%endif%}>
         <td>
         <em>    
             {{guess.time}}

@@ -40,9 +40,15 @@ urlpatterns = patterns('',
     url(r'^guesses/$',
         staff_member_required(
             ListView.as_view(
-                queryset=Guess.objects.all().order_by("-time"))
+                queryset=Guess.objects.filter(submitted=True).order_by("-time"))
             ),
         name='guesses'),
+    url(r'^guesses/all/$',
+        staff_member_required(
+            ListView.as_view(
+                queryset=Guess.objects.order_by("-time"))
+            ),
+        name='guesses_all'),
     url(r'^upload$', UploadFileView.as_view(), name='upload'),
     url(r'^live/$', LiveView.as_view(), name='live'),
 )
