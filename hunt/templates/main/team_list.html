@@ -11,9 +11,7 @@
     <tr>
         <th>Name</th>
         <th>Members</th>
-        <th>Completed Puzzles</th>
-        <th>Score</th>
-        <th>Score including extension</th>
+        <th>Puzzles Completed</th>
     </tr>
     {% for team in object_list %}
     <tr>
@@ -28,8 +26,6 @@
             {% endfor %}
         </td>
         <td>{{team.puzzles_completed.count}}</td>
-        <td>{{team.score1}}
-        <td>{{team.score2}}</td>
     </tr>
     {% endfor %}
 </table>

@@ -75,6 +75,9 @@ class Announcement(models.Model):
         return unicode(self.time)+" . . . . . "+self.title
 
 class Message(models.Model):
+    class Meta:
+        ordering = ['-time']
+
     team = models.ForeignKey(Team)
     judges = models.BooleanField()
     read = models.BooleanField(default=False)

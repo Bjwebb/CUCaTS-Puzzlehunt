@@ -23,7 +23,10 @@
             ({{team.unread_message_count}})
         </td>
         <td>
-            {{team.message_set.all.0.text|truncatewords:20}}
+            {% with team.message_set.all.0 as message %}
+            <strong>{% if message.judges%}Judges:{%else%}Team:{%endif%}</strong>
+            {{message.text|truncatewords:20}}
+            {% endwith %}
         </td>
     </tr>
 {% endfor %}
