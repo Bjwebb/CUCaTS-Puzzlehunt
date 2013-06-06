@@ -3,12 +3,12 @@ from pyroven.pyroven_django import Raven
 import django.contrib.auth as auth
 from django.http import HttpResponse, HttpResponseRedirect
 import os
-import secret
+import config
 
 # Configure everything beforehand
 r = Raven()
 if r.config is None:
-    r.config = RavenConfig(os.path.join(secret.ABSPATH, "raven.ini"))
+    r.config = RavenConfig(os.path.join(config.ABSPATH, "raven.ini"))
 
 def rlogin(request):
     # Get the raven object and return a redirect to the raven server

@@ -10,6 +10,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
+from hunt import secret
+
 class PuzzleView(DetailView):
     model = Puzzle
 
@@ -99,79 +101,7 @@ class PuzzlesView(TemplateView):
         return super(PuzzlesView, self).dispatch(request, pk=pk)
         
     def get_context_data(self, **kwargs):
-        out = [  ]
-        # Contains a list of all the nodes in a current level
-        level = [ -1, 0, -1 ]
-        hadn7 = False
-        while True:
-            #try:
-            #    if level[1] == -2:
-            #        out.append(([[], [{"name": "You must complete two of the puzzles leading to this point."}], []], ""))
-            #        break
-            #except IndexError: pass
-            node_placement = {}
-            placement_i = 0
-            i = 0
-            connections = ""
-            level_puzzles = []
-            newlevel = []
-            empty = True
-            for node in level:
-                if node == 7: hadn7 = True
-                puzzles = Puzzle.objects.filter(fromnode=node).order_by("tonode")
-                if len(puzzles) > 0: empty = False
-                level_puzzles.append(list(puzzles))
-                for puzzle in puzzles:
-                    n = puzzle.tonode
-                    incoming_puzzles = len( self.puzzles_completed.filter(tonode=n) )
-                    if n not in node_placement:
-                        if n==7 or n==14 or n==100:
-                            if incoming_puzzles >= 1:
-                                newlevel = [ -1, n, -1 ]
-                            #elif incoming_puzzles >= 1:
-                            #    newlevel = [ -1, -2, -1]
-                            node_placement[n] = 1
-                        else:
-                            if incoming_puzzles >= 1:
-                                newlevel.append(n)
-                            else:
-                                newlevel.append(-1)
-                            node_placement[n] = placement_i
-                            placement_i+=1
-                    if puzzle in self.puzzles_completed.all():
-                        thickness = "2"
-                    else: thickness = "1"
-                    connections += str(i)+str(node_placement[n])+thickness
-                i+=1
-                connections += "-"
-            level = newlevel
+        out = []
+        return {"puzzles": out, "team": self.team, "puzzles_pre": secret.puzzles_pre()}
 
-            if empty:
-                if hadn7 == False:
-                    level = [ -1 , 100, -1 ]
-                    hadn7 = True
-                else: break
-            out.append((level_puzzles, connections))
-        return {"puzzles": out, "team": self.team}
-
-def puzzlesimg(request, layout):
-    img = Image.new("RGBA", (300,50))
-    draw = ImageDraw.Draw(img)
-    i=0
-    c=0
-    color = ["#AA0000", "#0000AA", "#009900", "#000000"]
-    while i < len(layout):
-        if layout[i] == "-":
-            c=0
-            i+=1
-            continue
-        draw.line([
-                (50+100*int(layout[i]), 0),
-                (50+100*int(layout[i+1]), 49)
-            ], fill=color[c], width=int(layout[i+2]))
-        i+=3
-        c+=1
-    response = HttpResponse(mimetype="image/png")
-    img.save(response, "PNG")
-    return response
-
+from hunt.secret import puzzlesimg

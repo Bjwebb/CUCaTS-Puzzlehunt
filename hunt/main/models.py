@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from track.models import PageHit
 import urllib2
 import json
+import secret
 
 
 class Hunt(models.Model):
@@ -11,11 +12,14 @@ class Hunt(models.Model):
     active = models.BooleanField(default=True)
     debriefed = models.BooleanField(default=False)
 
+class Node(models.Model):
+    def __unicode__(self):
+        return secret.node_name(self.id)
+
 class Puzzle(models.Model):
     name = models.CharField(max_length=256, default="")
     description = models.TextField(default="", blank=True)
-    fromnode = models.IntegerField(default=0)
-    tonode = models.IntegerField(default=0)
+    node = models.OneToOneField(Node, null=True)
     solution = models.CharField(max_length=256, default="", blank=True)
 
     # Used for serving slightly different puzzle information to different teams
@@ -31,6 +35,7 @@ class Team(models.Model):
     name = models.CharField(max_length=256)
     members = models.ManyToManyField(User)
     puzzles_completed = models.ManyToManyField(Puzzle, blank=True)
+    nodes_visible = models.ManyToManyField(Node, default=[0,1,2,3])
     score1 = models.CharField(max_length=10, default='', blank=True)
     score2 = models.CharField(max_length=10, default='', blank=True)
     active = models.BooleanField(default=True)
