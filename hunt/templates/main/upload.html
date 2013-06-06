@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load static %}
 
 {% block content %}
 
@@ -14,6 +15,19 @@
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>
+{% endif %}
+
+{% if files %}
+<h2>Current Files</h2>
+
+{% for puzzle, fs in files %}
+    <p><a href="{% url 'puzzle' pk=puzzle.pk %}">{{puzzle}}</a></p>
+    <ul>
+    {% for f in fs %}
+        <li><a href="{% get_media_prefix %}{{puzzle.pk}}/{{f}}">{{f}}</a> <a href="?delete&puzzle={{puzzle.pk}}&file={{f|urlencode}}">X</a></li>
+    {% endfor %}
+    </ul>
+{% endfor %}
 {% endif %}
 
 {% endblock %}

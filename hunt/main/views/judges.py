@@ -21,6 +21,23 @@ class UploadFileView(FormView):
     def dispatch(self, request):
         return super(UploadFileView, self).dispatch(request)
 
+    def get_context_data(self, **context):
+        if 'delete' in self.request.GET:
+            puzzle_id = str(int(self.request.GET['puzzle']))
+            f = self.request.GET['file']
+            if '/' in f: raise Exception
+            os.remove(os.path.join(settings.MEDIA_ROOT, puzzle_id, f))
+
+        puzzles = dict((p.pk, p) for p in Puzzle.objects.all())
+        files = []
+        for d in os.listdir(settings.MEDIA_ROOT):
+            try:
+                files.append((puzzles[int(d)], os.listdir(os.path.join(settings.MEDIA_ROOT, d))))
+            except ValueError:
+                pass
+        context['files'] = files
+        return context
+
     def form_valid(self, form):
         puzzle_id = form.cleaned_data['puzzle']
         f = form.cleaned_data['file']
