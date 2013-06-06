@@ -28,7 +28,7 @@
 {% if user.is_staff %}
     Teams completed:
     {% for team in puzzle.team_set.all %}
-    <a href="{% url team pk=team.pk %}">{{ team.name }}</a>
+    <a href="{% url 'team' pk=team.pk %}">{{ team.name }}</a>
     {% endfor %}
 {% else %}
     <h3>

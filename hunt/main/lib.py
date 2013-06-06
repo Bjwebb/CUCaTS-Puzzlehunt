@@ -4,14 +4,10 @@ def test_puzzle_access(user, puzzle):
     if not user.is_staff:
         team = get_team(user)
         if team == None: raise Http404
-        # FIXME Doing this twice
-        if puzzle.fromnode == 0: routes = [ 0 ]
-        else: routes = team.puzzles_completed.filter(tonode=puzzle.fromnode)
-        # Disable the double puzzle messages for now
-        if False and (puzzle.fromnode == 7 or puzzle.fromnode == 14):
-            if len(routes) < 2:
+        try:
+            if not team.nodes_visible.filter(id=puzzle.node.id):
                 raise Http404
-        elif len(routes) < 1:
+        except Node.DoesNotExist:
             raise Http404
 
 def get_team(user):

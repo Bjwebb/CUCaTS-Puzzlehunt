@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView, DetailView
-from main.models import Puzzle, Team, Guess, TeamPuzzle
+from main.models import Puzzle, Team, Guess, TeamPuzzle, Node
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from main.lib import get_team, test_puzzle_access
@@ -54,6 +54,7 @@ class PuzzleView(DetailView):
                 context['correct'] = True
                 if team:
                     team.puzzles_completed.add(self.object)
+                    team.nodes_visible.add(*secret.puzzle_child_nodes(self.object))
             else:
                 context['correct'] = False 
             guess = Guess(puzzle=self.object,
@@ -82,6 +83,7 @@ class PuzzleView(DetailView):
 class PuzzlesView(TemplateView):
     template_name = "main/puzzles.html"
     puzzles_completed = None
+    nodes_visible = None
     team = None
     @method_decorator(login_required)
     def dispatch(self, request, pk=None):
@@ -89,19 +91,22 @@ class PuzzlesView(TemplateView):
             if pk:
                 self.team = Team.objects.get(pk=pk)
                 self.puzzles_completed = self.team.puzzles_completed
+                self.nodes_visible = self.team.nodes_visible
             else:
                 self.puzzles_completed = Puzzle.objects
+                self.nodes_visible = Node.objects
                 
         else:
             teams = request.user.team_set.all()
             if len(teams) > 0:
                 self.puzzles_completed = teams[0].puzzles_completed
+                self.nodes_visible = teams[0].nodes_visible
             else:
                 raise PermissionDenied
         return super(PuzzlesView, self).dispatch(request, pk=pk)
         
     def get_context_data(self, **kwargs):
         out = []
-        return {"puzzles": out, "team": self.team, "puzzles_pre": secret.puzzles_pre()}
+        return {"team": self.team, "puzzles_pre": secret.puzzles_pre(self.nodes_visible, self.puzzles_completed)}
 
 from hunt.secret import puzzlesimg
