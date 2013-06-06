@@ -42,7 +42,7 @@
             {{message.time}}
         </td>
         <td>
-            {{message.text}}
+            {{message.text|linebreaks}}
         </td>
     </tr>
     {% endfor %}
@@ -50,11 +50,22 @@
         <th></th>
         <td></td>
         <td>
-            <form method="post">
-                <textarea name="msg" rows=3 cols=80></textarea>
+            <form method="post" action="#message-form" id="message-form">
+                <textarea name="msg" id="message-text" rows=3 cols=80></textarea>
                 {% csrf_token %}
                 <input type="submit" value="Say" />
             </form>
+            <script type="text/javascript">
+                $('#message-text').keydown(function(e){
+                  e = e || event;
+                  if (e.keyCode === 13 && !e.shiftKey) {
+                    $('#message-form').submit();
+                    return false;
+                  }
+                  return true;
+                 });
+                $('#message-text').focus();
+            </script>
         </td>
 </table>
 
