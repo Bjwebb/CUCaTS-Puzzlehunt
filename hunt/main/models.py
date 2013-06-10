@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from track.models import PageHit
 import urllib2
 import json
-import secret
-
 
 class Hunt(models.Model):
     start = models.DateTimeField()
@@ -14,6 +12,7 @@ class Hunt(models.Model):
 
 class Node(models.Model):
     def __unicode__(self):
+        import secret
         return secret.node_name(self.id)
 
 class Puzzle(models.Model):

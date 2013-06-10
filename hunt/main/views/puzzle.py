@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-from hunt import secret
+import secret
 
 class PuzzleView(DetailView):
     model = Puzzle
@@ -109,4 +109,4 @@ class PuzzlesView(TemplateView):
         out = []
         return {"team": self.team, "puzzles_pre": secret.puzzles_pre(self.nodes_visible, self.puzzles_completed)}
 
-from hunt.secret import puzzlesimg
+from secret import puzzlesimg
