@@ -25,7 +25,7 @@ class LockDown:
         if request.user.is_staff:
             return None
         else:
-            if re.match("/$|/messages|/teams|/accounts", request.path):
+            if re.match("/$|/messages|/teams|/accounts|/admin", request.path):
                 return None
             else:
                 return render(request, "locked.html", {"text":message})
