@@ -48,6 +48,8 @@ class TeamPuzzle(models.Model):
     description = models.TextField(default="", blank=True)
 
 class Guess(models.Model):
+    class Meta:
+        verbose_name_plural = 'guesses'
     puzzle = models.ForeignKey(Puzzle)
     team = models.ForeignKey(Team, null=True)
     text = models.CharField(max_length=256) 
@@ -68,6 +70,9 @@ class Guess(models.Model):
                     )
         except urllib2.URLError:
             pass
+
+    def __unicode__(self):
+        return self.text
 
 class Announcement(models.Model):
     title = models.CharField(max_length=256, default="")

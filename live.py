@@ -20,7 +20,8 @@ def handle(request):
         e.set()
     elif request.uri.startswith('/wait/'):
         counter = int(request.uri[6:])
-        if counter > (global_counter + len(stuff)):
+        print counter, global_counter, stuff
+        if counter >= (global_counter + len(stuff)):
             e.clear()
             e.wait()
         i = counter - global_counter
