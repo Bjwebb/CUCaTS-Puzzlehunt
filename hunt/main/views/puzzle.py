@@ -107,6 +107,11 @@ class PuzzlesView(TemplateView):
         
     def get_context_data(self, **kwargs):
         out = []
-        return {"team": self.team, "puzzles_pre": secret.puzzles_pre(self.nodes_visible, self.puzzles_completed)}
+        return {
+            "team": self.team,
+            "puzzles_pre": secret.puzzles_pre(self.nodes_visible,
+                                              self.puzzles_completed,
+                                              self.request.GET)
+        }
 
 from secret import puzzlesimg

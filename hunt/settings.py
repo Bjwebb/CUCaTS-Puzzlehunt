@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'main',
     'track',
     'questionnaire',
+    'secret',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
