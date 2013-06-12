@@ -21,7 +21,7 @@ def rreturn(request):
     # See if this is a valid token
     user = auth.authenticate(response_str=token)
     if user is None:
-        return HttpResponse("Raven did not return a username.")
+        return HttpResponse('Sorry, this crsid is not in the puzzlehunt database, please contact bjw45@cam.ac.uk if this is unexpected.')
     else:
         auth.login(request, user)
         return HttpResponseRedirect('/')
