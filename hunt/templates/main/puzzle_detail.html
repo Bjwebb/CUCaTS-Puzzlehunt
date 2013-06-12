@@ -55,6 +55,7 @@
     <p>
     <form method="post">
     <table>
+    {% if puzzle.show_solution_box %}
     <tr>
         <td class="highlight cl3">Guess:</td>
         <td>
@@ -63,6 +64,7 @@
             <input type="submit" value="Submit" />
         </td>
     </tr>
+    {% endif %}
     {% if submitted %}
     <tr>
         <td class="highlight cl3">Response:</td>

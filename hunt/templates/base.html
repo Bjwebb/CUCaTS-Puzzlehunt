@@ -85,6 +85,9 @@ $(document).ready(function() {
         &nbsp; &#183; &nbsp; 
     Remaining: {{hunt.end|timeuntil:hunt.now}}
         &nbsp; &#183; &nbsp; 
+ {% else %}
+    Puzzlehunt finished 
+        &nbsp; &#183; &nbsp; 
  {% endif %}
 {% else %}
     Puzzlehunt begins in {{hunt.start|timeuntil:hunt.now}}

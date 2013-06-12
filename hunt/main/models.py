@@ -20,6 +20,7 @@ class Puzzle(models.Model):
     description = models.TextField(default="", blank=True)
     node = models.OneToOneField(Node, null=True)
     solution = models.CharField(max_length=256, default="", blank=True)
+    show_solution_box = models.BooleanField(default=True)
 
     # Used for serving slightly different puzzle information to different teams
     teams = models.ManyToManyField('Team', through='TeamPuzzle')
