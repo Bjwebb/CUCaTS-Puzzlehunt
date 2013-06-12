@@ -20,7 +20,7 @@ urlpatterns = patterns('',
 
     url(r'^puzzles/$', PuzzlesView.as_view(), name='puzzles'),
     url(r'^puzzles/(?P<pk>\d+)$', PuzzleView.as_view(), name='puzzle'),
-    url(r'^puzzles/(?P<pk>\d+)/function$', 'main.views.puzzle.function', name='puzzle'),
+    url(r'^puzzles/(?P<pk>\d+)/function$', 'main.views.puzzle.function'),
     url(r'^puzzles/(?P<pk>\d+)/solve$', 'main.views.puzzle.solve'),
     url(r'^teams/$',
         ListView.as_view(queryset=Team.objects.all().order_by("-score1")),
