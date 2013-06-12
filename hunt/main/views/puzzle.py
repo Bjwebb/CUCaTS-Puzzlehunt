@@ -22,7 +22,7 @@ def function(request, pk):
     if puzzle.function == '':
         raise Http404
     else:
-        return HttpResponse(json.dumps(getattr(secret.functions, puzzle.function)(request, team)), mimetype="application/json")
+        return HttpResponse(json.dumps(eval(puzzle.function)), mimetype="application/json")
 
 def solve(request, pk):
     token = request.GET.get('token') 
