@@ -94,3 +94,7 @@ class Message(models.Model):
     text = models.TextField(default="", blank=True) 
     time = models.DateTimeField(auto_now_add=True)
 
+class Token(models.Model):
+    token = models.CharField(max_length=256, default="")
+    name = models.CharField(max_length=256, default="")
+    description = models.TextField(default="", blank=True)

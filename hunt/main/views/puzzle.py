@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView, DetailView
-from main.models import Puzzle, Team, Guess, TeamPuzzle, Node
+from main.models import Puzzle, Team, Guess, TeamPuzzle, Node, Token
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from main.lib import get_team, test_puzzle_access
@@ -11,6 +11,24 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 import secret
+
+def api(request, pk):
+    token = request.GET.get('token') 
+    puzzle = Puzzle.objects.get(pk=pk)
+    team = Team.objects.get(pk=int(request.GET.get('team')))
+    if Token.objects.filter(token=token).exists():
+        guess = Guess(puzzle=puzzle,
+                team=team,
+                text='(API)',
+                submitted=True,
+                correct=True,
+                pagehit = request.pagehit)
+        guess.save()
+        team.puzzles_completed.add(puzzle)
+        team.nodes_visible.add(*secret.puzzle_child_nodes(puzzle))
+        return HttpResponse('{}', mimetype="application/json")
+    else: 
+        return HttpResponse('{"error": "Acess denied"}', mimetype="application/json")
 
 class PuzzleView(DetailView):
     model = Puzzle
@@ -114,4 +132,3 @@ class PuzzlesView(TemplateView):
                                               self.request.GET)
         }
 
-from secret import puzzlesimg

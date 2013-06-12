@@ -19,10 +19,8 @@ urlpatterns = patterns('',
 
 
     url(r'^puzzles/$', PuzzlesView.as_view(), name='puzzles'),
-    url(r'^puzzles/(?P<layout>.*).png$',
-        'main.views.puzzle.puzzlesimg',
-        name='puzzlesimg'),
     url(r'^puzzles/(?P<pk>\d+)$', PuzzleView.as_view(), name='puzzle'),
+    url(r'^api/puzzles/(?P<pk>\d+)$', 'main.views.puzzle.api'),
     url(r'^teams/$',
         ListView.as_view(queryset=Team.objects.all().order_by("-score1")),
         name='teams'),

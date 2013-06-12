@@ -28,6 +28,10 @@ class GuessAdmin(admin.ModelAdmin):
 class TeamAdmin(admin.ModelAdmin):
     filter_horizontal = ('members', 'puzzles_completed', 'nodes_visible')
 
+class TokenAdmin(admin.ModelAdmin):
+    list_display = ('token', 'name')
+
+admin.site.register(Token, TokenAdmin)
 admin.site.register(Node)
 admin.site.register(Hunt)
 admin.site.register(Puzzle, PuzzleAdmin)
