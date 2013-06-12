@@ -11,15 +11,27 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 import secret
+import secret.functions
+import json
+from django.http import Http404
 
-def api(request, pk):
+def function(request, pk):
+    puzzle = Puzzle.objects.get(pk=pk)
+    test_puzzle_access(request.user, puzzle)
+    team = get_team(request.user)
+    if puzzle.function == '':
+        raise Http404
+    else:
+        return HttpResponse(json.dumps(getattr(secret.functions, puzzle.function)(request, team)), mimetype="application/json")
+
+def solve(request, pk):
     token = request.GET.get('token') 
     puzzle = Puzzle.objects.get(pk=pk)
     team = Team.objects.get(pk=int(request.GET.get('team')))
     if Token.objects.filter(token=token).exists():
         guess = Guess(puzzle=puzzle,
                 team=team,
-                text='(API)',
+                text='(AUTO)',
                 submitted=True,
                 correct=True,
                 pagehit = request.pagehit)
