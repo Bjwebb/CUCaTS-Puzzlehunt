@@ -15,6 +15,12 @@ class Node(models.Model):
         import secret
         return secret.node_name(self.id)
 
+    def get_puzzle(self):
+        try:
+            return self.puzzle
+        except Puzzle.DoesNotExist:
+            return Puzzle(id=0, name='No puzzle')
+
 class Puzzle(models.Model):
     name = models.CharField(max_length=256, default="")
     description = models.TextField(default="", blank=True)
