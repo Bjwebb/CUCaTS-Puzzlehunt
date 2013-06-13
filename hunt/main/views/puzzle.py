@@ -117,6 +117,8 @@ class PuzzlesView(TemplateView):
     team = None
     @method_decorator(login_required)
     def dispatch(self, request, pk=None):
+        if 'bare' in self.request.GET:
+            self.template_name = "main/puzzles_bare.html"
         if request.user.is_staff:
             if pk:
                 self.team = Team.objects.get(pk=pk)
