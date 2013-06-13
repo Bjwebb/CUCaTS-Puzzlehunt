@@ -101,6 +101,7 @@ class PuzzleView(DetailView):
             or (self.object in team.puzzles_completed.all())
         )
         
+        context["quotes"] = [ q.split('--') for q in self.object.quotes.split('\n') ]
         context["teampuzzle"] = None
         if team:
             try:

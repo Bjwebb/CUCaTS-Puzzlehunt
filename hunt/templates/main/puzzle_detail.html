@@ -40,6 +40,13 @@
     {% if completed %}Completed{%else%}Uncompleted{%endif%}
     </h3>
 {% endif %}
+
+{% for quote,attr in quotes %}
+<div class="quote">
+<div class="quote-text">“{{quote|safe}}”</div>
+<div class="quote-attr">&mdash; {{attr|safe}}</div>
+</div>
+{% endfor %}
 {{ puzzle.description|safe|linebreaks }}
 
 {% if user.is_staff %}
