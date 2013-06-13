@@ -11,7 +11,9 @@
     <tr>
         <th>Name</th>
         <th>Members</th>
+    {% if user.is_staff or hunt.debriefed %}
         <th>Puzzles Completed</th>
+    {% endif %}
     </tr>
     {% for team in object_list %}
     <tr>
@@ -25,7 +27,9 @@
             {{ user.username }}
             {% endfor %}
         </td>
+    {% if user.is_staff or hunt.debriefed %}
         <td>{{team.puzzles_completed.count}}</td>
+    {% endif %}
     </tr>
     {% endfor %}
 </table>

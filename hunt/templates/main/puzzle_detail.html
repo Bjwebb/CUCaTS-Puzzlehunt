@@ -26,10 +26,15 @@
 
 <h2>{{ puzzle.name }}</h2>
 {% if user.is_staff %}
-    Teams completed:
-    {% for team in puzzle.team_set.all %}
-    <a href="{% url 'team' pk=team.pk %}">{{ team.name }}</a>
-    {% endfor %}
+    <p><h3>Teams completed:
+    {% if puzzle.team_set.all %}
+        {% for team in puzzle.team_set.all %}
+        <a href="{% url 'team' pk=team.pk %}">{{ team.name }}</a>
+        {% endfor %}
+    {% else %}
+        None
+    {% endif %}
+    </strong></h3>
 {% else %}
     <h3>
     {% if completed %}Completed{%else%}Uncompleted{%endif%}
@@ -38,10 +43,13 @@
 {{ puzzle.description|safe|linebreaks }}
 
 {% if user.is_staff %}
-    {% for tp in puzzle.teampuzzle_set.all %}
-    <strong>{{ tp.team }}</strong>
-    {{ tp.description|safe|linebreaks }}
-    {% endfor %}
+    {% if puzzle.teampuzzle_set.all %}
+        <h3>Team Specific Puzzle Descriptions</h3>
+        {% for tp in puzzle.teampuzzle_set.all %}
+        <strong>{{ tp.team }}</strong>
+        {{ tp.description|safe|linebreaks }}
+        {% endfor %}
+    {% endif %}
 {% else %}
     {{ teampuzzle.description|safe|linebreaks }}
 {% endif %}
@@ -49,7 +57,7 @@
 
 {% if hunt.start < hunt.now and hunt.end > hunt.now %}
     <p>
-    <form method="post">
+    <form method="post" action="#solution" id="solution">
     <table>
     {% if puzzle.show_solution_box %}
     <tr>
