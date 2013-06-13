@@ -26,6 +26,7 @@ class GuessAdmin(admin.ModelAdmin):
     readonly_fields = ('pagehit',)
 
 class TeamAdmin(admin.ModelAdmin):
+    list_display = ('name','active','visible')
     filter_horizontal = ('members', 'puzzles_completed', 'nodes_visible')
 
 class TokenAdmin(admin.ModelAdmin):

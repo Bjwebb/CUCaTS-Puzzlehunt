@@ -14,35 +14,6 @@ class HomeView(ListView):
                 announcement.teams_read.add(team)
         return super(HomeView, self).get(self, request)
 
-
-class SignupForm(forms.Form):
-    team_name = forms.CharField(max_length=256, required=False)
-    player1 = forms.CharField(required=False)
-    player2 = forms.CharField(required=False)
-    player3 = forms.CharField(required=False)
-
-class SignupView(FormView):
-    template_name = 'main/signup.html'
-    form_class = SignupForm
-    success_url = '/signup/thankyou'
-
-    def form_valid(self, form):
-        team = Team(name=form.cleaned_data['team_name'])
-        team.save()
-        def add_player(username, team):
-            if username: 
-                try:
-                    user = User.objects.get(username=username)
-                except User.DoesNotExist:
-                    user = User(username=username)
-                    user.save()
-                team.members.add(user)
-        add_player(form.cleaned_data['player1'], team)
-        add_player(form.cleaned_data['player2'], team)
-        add_player(form.cleaned_data['player3'], team)
-        return super(SignupView, self).form_valid(form)
-
-
 class MessagesView(ListView):
     template_name = "main/message_list.html"
     model = Message

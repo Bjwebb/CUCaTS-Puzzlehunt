@@ -42,10 +42,11 @@ class Team(models.Model):
     name = models.CharField(max_length=256)
     members = models.ManyToManyField(User)
     puzzles_completed = models.ManyToManyField(Puzzle, blank=True)
-    nodes_visible = models.ManyToManyField(Node, default=[0,1,2,3])
+    nodes_visible = models.ManyToManyField(Node)
     score1 = models.CharField(max_length=10, default='', blank=True)
     score2 = models.CharField(max_length=10, default='', blank=True)
     active = models.BooleanField(default=True)
+    visible = models.BooleanField(default=True)
     
     def __unicode__(self):
         return self.name

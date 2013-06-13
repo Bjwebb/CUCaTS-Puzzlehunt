@@ -1,6 +1,6 @@
 from django import forms
 from django.views.generic import FormView, TemplateView
-from main.models import Puzzle, Team
+from main.models import Puzzle, Team, User
 import os, json
 import settings
 
@@ -65,3 +65,51 @@ class LiveView(TemplateView):
             "teams": Team.objects.all(),
             }
 
+
+
+class SignupForm(forms.Form):
+    team_name = forms.CharField(max_length=256, required=False)
+    player1_crsid = forms.CharField(required=False)
+    player1_first_name = forms.CharField(required=False)
+    player1_last_name = forms.CharField(required=False)
+    player2_crsid = forms.CharField(required=False)
+    player2_first_name = forms.CharField(required=False)
+    player2_last_name = forms.CharField(required=False)
+    player3_crsid = forms.CharField(required=False)
+    player3_first_name = forms.CharField(required=False)
+    player3_last_name = forms.CharField(required=False)
+
+class SignupView(FormView):
+    template_name = 'main/signup.html'
+    form_class = SignupForm
+    success_url = '/signup/thankyou'
+
+    def form_valid(self, form):
+        team = Team(name=form.cleaned_data['team_name'])
+        team.save()
+        team.nodes_visible.add(1)
+        team.nodes_visible.add(2)
+        team.nodes_visible.add(3)
+        team.nodes_visible.add(4)
+        def add_player(username, first_name, last_name, team):
+            if username: 
+                try:
+                    user = User.objects.get(username=username)
+                except User.DoesNotExist:
+                    user = User(username=username)
+                    user.save()
+                user.firt_name = first_name
+                user.last_name = last_name
+                team.members.add(user)
+        print form.cleaned_data
+        for i in range(1,4):
+            add_player(
+                form.cleaned_data['player{0}_crsid'.format(i)],
+                form.cleaned_data['player{0}_first_name'.format(i)],
+                form.cleaned_data['player{0}_last_name'.format(i)],
+                team)
+        return super(SignupView, self).form_valid(form)
+
+    @method_decorator(staff_member_required)
+    def dispatch(self, request):
+        return super(SignupView, self).dispatch(request)

@@ -13,6 +13,7 @@
         <th>Members</th>
     {% if user.is_staff or hunt.debriefed %}
         <th>Puzzles Completed</th>
+        <th>Nodes Visible</th>
     {% endif %}
     </tr>
     {% for team in object_list %}
@@ -24,11 +25,13 @@
     {% endif %}
         <td>
             {% for user in team.members.all %}
-            {{ user.username }}
+            {{user.first_name}} {{user.last_name}} ({{ user.username }})
+            <br/>
             {% endfor %}
         </td>
     {% if user.is_staff or hunt.debriefed %}
         <td>{{team.puzzles_completed.count}}</td>
+        <td>{{team.nodes_visible.count}}</td>
     {% endif %}
     </tr>
     {% endfor %}
