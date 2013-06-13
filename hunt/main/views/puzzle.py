@@ -100,8 +100,6 @@ class PuzzleView(DetailView):
             self.request.user.is_staff
             or (self.object in team.puzzles_completed.all())
         )
-        context["clue"] = None
-        if context["completed"]: context["clue"] = self.object.clue
         
         context["teampuzzle"] = None
         if team:
