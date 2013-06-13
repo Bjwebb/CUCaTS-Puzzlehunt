@@ -42,10 +42,12 @@
 {% endif %}
 
 {% for quote,attr in quotes %}
-<div class="quote">
-<div class="quote-text">“{{quote|safe}}”</div>
-<div class="quote-attr">&mdash; {{attr|safe}}</div>
-</div>
+{% if quote %}
+    <div class="quote">
+    <div class="quote-text">“{{quote|safe}}”</div>
+    <div class="quote-attr">&mdash; {{attr|safe}}</div>
+    </div>
+{% endif %}
 {% endfor %}
 {{ puzzle.description|safe|linebreaks }}
 
