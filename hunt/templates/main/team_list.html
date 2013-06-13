@@ -11,6 +11,7 @@
     <tr>
         <th>Name</th>
         <th>Members</th>
+        <th>Achievements</th>
     {% if user.is_staff or hunt.debriefed %}
         <th>Puzzles Completed</th>
         <th>Nodes Visible</th>
@@ -28,6 +29,9 @@
             {{user.first_name}} {{user.last_name}} ({{ user.username }})
             <br/>
             {% endfor %}
+        </td>
+        <td>
+            {{team.achievements}}
         </td>
     {% if user.is_staff or hunt.debriefed %}
         <td>{{team.puzzles_completed.count}}</td>

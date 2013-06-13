@@ -47,6 +47,7 @@ class Team(models.Model):
     score2 = models.CharField(max_length=10, default='', blank=True)
     active = models.BooleanField(default=True)
     visible = models.BooleanField(default=True)
+    achievements = models.TextField(default="", blank=True)
     
     def __unicode__(self):
         return self.name
