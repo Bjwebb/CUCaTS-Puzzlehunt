@@ -26,9 +26,18 @@
 
 <h2>{{ puzzle.name }}</h2>
 {% if user.is_staff %}
-    <p><h3>Teams completed:
+    <h3>Teams completed:
     {% if puzzle.team_set.all %}
         {% for team in puzzle.team_set.all %}
+        <a href="{% url 'team' pk=team.pk %}">{{ team.name }}</a>
+        {% endfor %}
+    {% else %}
+        None
+    {% endif %}
+    </strong></h3>
+    <h3>Visible to teams:
+    {% if puzzle.node.team_set.all %}
+        {% for team in puzzle.node.team_set.all %}
         <a href="{% url 'team' pk=team.pk %}">{{ team.name }}</a>
         {% endfor %}
     {% else %}
