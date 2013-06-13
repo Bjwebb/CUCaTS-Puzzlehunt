@@ -26,13 +26,13 @@ class Puzzle(models.Model):
     description = models.TextField(default="", blank=True)
     node = models.OneToOneField(Node, null=True, blank=True)
     solution = models.CharField(max_length=256, default="", blank=True)
+    quotes = models.TextField(default="", blank=True)
+    nodes = models.TextField(default="", blank=True)
     show_solution_box = models.BooleanField(default=True)
     function = models.TextField(default="", blank=True)
 
     # Used for serving slightly different puzzle information to different teams
     teams = models.ManyToManyField('Team', through='TeamPuzzle')
-    # Clue for following puzzles
-    clue = models.TextField(default="", blank=True)
     
     def __unicode__(self):
         return self.name
