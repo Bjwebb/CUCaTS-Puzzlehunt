@@ -59,6 +59,7 @@
 {% endif %}
 {% endfor %}
 {{ puzzle.description|safe|linebreaks }}
+{{ puzzle.scripts|safe }}
 
 {% if user.is_staff %}
     {% if puzzle.teampuzzle_set.all %}

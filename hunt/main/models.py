@@ -24,6 +24,7 @@ class Node(models.Model):
 class Puzzle(models.Model):
     name = models.CharField(max_length=256, default="")
     description = models.TextField(default="", blank=True)
+    scripts = models.TextField(default="", blank=True)
     node = models.OneToOneField(Node, null=True, blank=True)
     solution = models.CharField(max_length=256, default="", blank=True)
     quotes = models.TextField(default="", blank=True)
