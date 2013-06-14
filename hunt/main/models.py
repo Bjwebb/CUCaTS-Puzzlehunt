@@ -31,6 +31,7 @@ class Puzzle(models.Model):
     nodes = models.TextField(default="", blank=True)
     show_solution_box = models.BooleanField(default=True)
     function = models.TextField(default="", blank=True)
+    flag = models.BooleanField(default=False)
 
     # Used for serving slightly different puzzle information to different teams
     teams = models.ManyToManyField('Team', through='TeamPuzzle')
