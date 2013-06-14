@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 class PageHit(models.Model):
     page = models.CharField(max_length=50)
     time = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User,null=True)
+    team = models.ForeignKey('main.Team',null=True)
 
     def __unicode__(self):
         return self.user.username+u' '+self.page

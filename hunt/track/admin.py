@@ -2,8 +2,8 @@ from django.contrib import admin
 from track.models import *
 
 class PageHitAdmin(admin.ModelAdmin):
-    list_display = ('page', 'time', 'user')
-    list_filter = ('user',)
+    list_display = ('page', 'time', 'user', 'team')
+    list_filter = ('user','team')
     search_fields = ('page',)
 
 class EventAdmin(admin.ModelAdmin):
