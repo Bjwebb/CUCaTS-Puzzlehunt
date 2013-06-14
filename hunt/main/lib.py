@@ -1,4 +1,5 @@
 from django.http import Http404
+from models import Node
 
 def test_puzzle_access(user, puzzle):
     if not user.is_staff:
