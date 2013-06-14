@@ -97,9 +97,9 @@ class SignupView(FormView):
                     user = User.objects.get(username=username)
                 except User.DoesNotExist:
                     user = User(username=username)
-                    user.save()
                 user.firt_name = first_name
                 user.last_name = last_name
+                user.save()
                 team.members.add(user)
         print form.cleaned_data
         for i in range(1,4):
