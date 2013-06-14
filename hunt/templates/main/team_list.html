@@ -31,7 +31,7 @@
             {% endfor %}
         </td>
         <td>
-            {{team.achievements}}
+            {{team.achievements|safe|linebreaks}}
         </td>
     {% if user.is_staff or hunt.debriefed %}
         <td>{{team.puzzles_completed.count}}</td>

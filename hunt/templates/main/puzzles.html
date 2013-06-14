@@ -9,6 +9,10 @@
 <h2>Puzzles</h2>
 {% endif %}
 
+{% if user.is_staff %}
+<a href="{% url 'secret.views.puzzles_grid' %}">GRID</a> 
+{% endif %}
+
 {{puzzles_pre|safe}}
 
 {% endblock %}
