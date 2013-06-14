@@ -7,13 +7,13 @@ class Log:
             user = request.user
         else:
             user = None
-        if not request.path.startswith('/track', '/liveapi'):
+        if not request.path.startswith('/track') and not request.path.startswith('/liveapi'):
             if 'xhr' in request.GET and 'ph' in request.GET:
                 ph = PageHit.objects.get(pk=request.GET['ph'])
                 if ph.user == user:
                     request.pagehit = ph
                     return None
-            ph = PageHit(user=user, team=get_team(user), page=request.path)
+            ph = PageHit(user=user, team=get_team(user), page=request.path, judge=False if not user else user.is_staff)
             ph.save()
             request.pagehit = ph
             return None
